@@ -8,7 +8,11 @@ import java.util.LinkedList;
 
 public class Radar extends JFrame {
 
+<<<<<<< HEAD
     private LinkedList<Statek> statkiPowietrzne;
+=======
+    private LinkedList<StatekPowietrzny> statkiPowietrzne;
+>>>>>>> 746bed1 (h)
     private Image mapa;
     private Timer timer;
     private ActionListener actionListener;
@@ -20,8 +24,13 @@ public class Radar extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 czas++;
+<<<<<<< HEAD
                 for (Statek s : statkiPowietrzne) {              //petla for each dla listy statkow powietrznych
                     s.przesun();
+=======
+                for (StatekPowietrzny s : statkiPowietrzne) {              //petla for each dla listy statkow powietrznych
+                    s.ivanPosunSie(czas);
+>>>>>>> 746bed1 (h)
                     System.out.println(czas + ". " + "S = (" + s.getWspolrzedne().getX() + ", " + s.getWspolrzedne().getY() + ")"); //
                     repaint();                                             //ponowne wyolanie nadpisanej metody paint()
                 }
@@ -34,7 +43,11 @@ public class Radar extends JFrame {
         JPanel panel = ustawPrametryPanelu();                                //glowny panel, w ktorym znajduje sie mapa i do ktorego beda dodawane statki powietrzne
         ustawParametryOkna(panel);
 
+<<<<<<< HEAD
         statkiPowietrzne  = new LinkedList<Statek>();
+=======
+        statkiPowietrzne  = new LinkedList<StatekPowietrzny>();
+>>>>>>> 746bed1 (h)
     }
 
     private JPanel ustawPrametryPanelu() {
@@ -63,11 +76,19 @@ public class Radar extends JFrame {
        // super.paint(g); //?????
         Graphics2D g2D = (Graphics2D) g;                                   //Rrzutowanie w doł obiektu typu graphics na obiekt typu graphics2D, poniewaz ma wiecej funkcjonalnosci
         g2D.drawImage(mapa, 0 , 0 , null);
+<<<<<<< HEAD
         //for(Statek s: statkiPowietrzne)
            //s.rysuj(g);
     }
 
     public void dodajStatek(Statek statek) {
+=======
+        for(StatekPowietrzny s: statkiPowietrzne)
+           s.rysuj(g);
+    }
+
+    public void dodajStatek(StatekPowietrzny statek) {
+>>>>>>> 746bed1 (h)
         statkiPowietrzne.add(statek);
     }
 
