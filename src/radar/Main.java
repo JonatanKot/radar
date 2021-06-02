@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
 		Radar radar = new Radar();
+
 		Samolot samolot = new Samolot(
 				new Punkt(200, 300),
 				new Trasa(
