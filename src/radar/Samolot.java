@@ -8,10 +8,10 @@ public class Samolot extends Statek {
 		symbol = new ImageIcon("img/samolot.png").getImage();
 	}
 
-    public Samolot(int wysokosc, Punkt wspolrzedne) {
+    public Samolot(Punkt wspolrzedne, Trasa trasa) {
     	symbol = new ImageIcon("img/samolot.png").getImage();
-        this.wspolrzedne = wspolrzedne;
-        //this.trasa = new Trasa(wysokosc);
+        this.wspolrzedne = new Punkt(wspolrzedne);
+        this.trasa = new Trasa(trasa);
     }
     
     

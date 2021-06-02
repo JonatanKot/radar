@@ -13,8 +13,9 @@ public abstract class Statek {
     }
     
     public boolean przesun() {
-    	return(false);
-    	
+    	wspolrzedne = new Punkt(trasa.obliczAktualneWspolrzedne(wspolrzedne));
+
+        return(false);
     }
     
     public Image getObraz() {

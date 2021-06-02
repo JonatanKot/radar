@@ -12,18 +12,19 @@ public class Radar extends JFrame {
     private Image mapa;
     private Timer timer;
     private ActionListener actionListener;
-    private int czas = 0;
+
+    int counter = 0;
 
     public Radar() {
 
         actionListener = new ActionListener() {                            //W odpowiedzi na okreslona akcje (w tym przypadku co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {
-                czas++;
                 for (Statek s : statkiPowietrzne) {              //petla for each dla listy statkow powietrznych
                     s.przesun();
-                    System.out.println(czas + ". " + "S = (" + s.getWspolrzedne().getX() + ", " + s.getWspolrzedne().getY() + ")"); //
+                    System.out.println(counter + ". " + "S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //
                     repaint();                                             //ponowne wyolanie nadpisanej metody paint()
+                    counter++;
                 }
             }
         };

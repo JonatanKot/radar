@@ -1,17 +1,17 @@
 package radar;
 
 public class Punkt {
-	int x, y;
+	double x, y; // zmienilem int-y na double zeby niecalkowita zmiana przemieszczenia nie byla zapominana
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 	
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 	
-	public Punkt(int x, int y) {
+	public Punkt(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}

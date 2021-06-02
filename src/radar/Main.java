@@ -5,13 +5,18 @@ public class Main {
     public static void main(String[] args) {
 
 		Radar radar = new Radar();
-		Samolot samolot = new Samolot(10, new Punkt(200, 200));
-		Balon balon = new Balon(5, new Punkt(500, 300));
+		Samolot samolot = new Samolot(
+				new Punkt(200, 300),
+				new Trasa(
+						new Odcinek(
+							new Punkt(200, 0),
+							new Punkt(200, 700),
+							1000
+						)
+				)
+		);
 
-		radar.dodajStatek(samolot); radar.dodajStatek(balon);
+		radar.dodajStatek(samolot);
 
-//		Wspolrzedne w = new Wspolrzedne(2000, 1000);
-//		w = w.obliczWspolrzedne(100, 0,1000,5);
-//		System.out.println("S = (" + w.getX() + ", " + w.getY() + ")");
     }
 }
