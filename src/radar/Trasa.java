@@ -1,5 +1,6 @@
 package radar;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedList;
@@ -76,10 +77,8 @@ public class Trasa implements MouseListener {
 		return kierunek * Math.PI / 180;
 	}
 
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 	}
 
 	@Override
