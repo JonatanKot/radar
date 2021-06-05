@@ -49,10 +49,10 @@ public abstract class Statek {
         int wylosowanyStatek = random.nextInt(3);
 
         switch (wylosowanyStatek) {
-            case 0 -> statek = Samolot.wygenerujLosowySamolot();
-            case 1 -> statek = Smiglowiec.wygenerujLosowySmiglowiec();
-            case 2 -> statek = Balon.wygenerujLosowyBalon();
-            case 3 -> statek = Szybowiec.wygenerujLosowySzybowiec();
+            case 0 : statek = Samolot.wygenerujLosowySamolot();
+            case 1 : statek = Smiglowiec.wygenerujLosowySmiglowiec();
+            case 2 : statek = Balon.wygenerujLosowyBalon();
+            case 3 : statek = Szybowiec.wygenerujLosowySzybowiec();
         }
 
         return statek;

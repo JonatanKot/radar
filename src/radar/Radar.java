@@ -13,6 +13,7 @@ public class Radar extends JPanel {
     private ActionListener actionListener;
     private MouseAdapter mouseAdapter;
     private JFrame okno;
+    private ObiektyNieporuszajace obiektyNp; // dodanie panelu obiektow nieporuszajacych
 
     //Animacja, patrz nizej
     /*--------------------------------------------------------------------------------------------------------------*/
@@ -23,7 +24,7 @@ public class Radar extends JPanel {
     int counter = 0;  //Tymczasowy kod
 
     public Radar() {
-
+        obiektyNp = new ObiektyNieporuszajace();
         actionListener = new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -159,8 +160,8 @@ public class Radar extends JPanel {
         super.paintComponent(g);          /*Odwoluje sie do metody paintComponent klasy wyzszej, niezbedne do
                                            narysowania innych komponentow graficznych na zdjeciu tla np. JLabel*/
         Graphics2D g2D = (Graphics2D) g;  //Rrzutowanie w doł obiektu typu graphics na obiekt typu graphics2D, poniewaz ma wiecej funkcjonalnosci
-
         g.drawImage(mapa, 0,0,null);
+        obiektyNp.paint(g);
         // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
 
         //Animacja, patrz wyzej
