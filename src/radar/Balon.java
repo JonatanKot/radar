@@ -5,13 +5,31 @@ import java.awt.*;
 
 public class Balon extends Statek {
 
+	private static final int MIN_PREDKOSC_KMH = 10,
+			MAX_PREDKOSC_KMH = 40,
+			MIN_WYSOKOSC_M = 50,
+			MAX_WYSOKOSC_M = 1000;
+
 	public Balon() {
 		symbol = new ImageIcon("img/balon.png").getImage();
 	}
 
-    public Balon(int wysokosc, Punkt wspolrzedne) {
-    	symbol = new ImageIcon("img/balon.png").getImage();
-        this.wspolrzedne = wspolrzedne;
-        //this.trasa = new Trasa(wysokosc);
-    }
+    public Balon(Trasa trasa) {
+		this.trasa = new Trasa(trasa);
+		this.wspolrzedne = new Punkt(
+				trasa.getPunktTrasy(0)          /*Zakladam, ze poczatkowymi wpolrzedymi statku beda
+                                                         wspolrzedne pierwszego punkt jego trasy*/
+		);
+		symbol = new ImageIcon("img/balon.png").getImage();
+	}
+
+	public static Balon wygenerujLosowyBalon () {
+		Trasa trasa = Trasa.wygenerujLosowaTrase(
+				MIN_PREDKOSC_KMH,
+				MAX_PREDKOSC_KMH,
+				MIN_WYSOKOSC_M,
+				MAX_WYSOKOSC_M
+		);
+		return new Balon(trasa);
+	}
 }
