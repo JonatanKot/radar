@@ -17,22 +17,22 @@ public class Trasa implements MouseListener {
 	private static int MIN_LICZBA_ODCINKOW = 2;
 	private static int MAX_LICZBA_ODCINKOW = 6;
 
-	public Trasa(int wysokosc, int xmax, int ymax){       //Konstruktor do generowania losowych tras (work in progress)
-		this.wysokosc = wysokosc;
-		trasaSize = generator.nextInt(9)+1;
-		Punkt pprev = new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax);
-		for(int i =0;i<trasaSize;i++){
-<<<<<<< HEAD
-			odcinki.add(new Odcinek(pprev,
-					new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-					generator.nextInt(9)+1));
-=======
-			odcinki.add(new Odcinek(new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-					odcinki.add(new Odcinek(pprev,
-							new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-							generator.nextInt(9)+1));
->>>>>>> 71b9df6 (Losowanie tras, statkow, rozne zmiany (kod prawdopodobie jeszcze do poprawy))
-		}
+//	public Trasa(int wysokosc, int xmax, int ymax){       //Konstruktor do generowania losowych tras (work in progress)
+//		this.wysokosc = wysokosc;
+//		trasaSize = generator.nextInt(9)+1;
+//		Punkt pprev = new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax);
+//		for(int i =0;i<trasaSize;i++){
+//<<<<<<< HEAD
+//			odcinki.add(new Odcinek(pprev,
+//					new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
+//					generator.nextInt(9)+1));
+//=======
+//			odcinki.add(new Odcinek(new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
+//					odcinki.add(new Odcinek(pprev,
+//							new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
+//							generator.nextInt(9)+1));
+//>>>>>>> 71b9df6 (Losowanie tras, statkow, rozne zmiany (kod prawdopodobie jeszcze do poprawy))
+//		}
 //	public Trasa(int wysokosc, int xmax, int ymax){       //Konstruktor do generowania losowych tras (work in progress)
 //		this.wysokosc = wysokosc;
 //		trasaSize = generator.nextInt(9)+1;
