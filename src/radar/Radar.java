@@ -7,16 +7,16 @@ import java.util.LinkedList;
 
 public class Radar extends JPanel {
 
-    private LinkedList<Statek> statkiPowietrzne;
+    private LinkedList<Statek> statki;
     private Image mapa;
     private Timer timer;
     private ActionListener actionListener;
     private MouseAdapter mouseAdapter;
-    JFrame okno;
+    private JFrame okno;
 
     //Animacja, patrz nizej
     /*--------------------------------------------------------------------------------------------------------------*/
-    int x=300, y=250;
+    int wx =300, wy =250;
     ImageIcon pointIcon = new ImageIcon("img/punkt.png");
     /*--------------------------------------------------------------------------------------------------------------*/
 
@@ -27,8 +27,8 @@ public class Radar extends JPanel {
         actionListener = new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Statek s : statkiPowietrzne) {              //petla for each dla listy statkow powietrznych
-                    s.przesun();
+                for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
+                    //s.przesun();
                     //System.out.println(counter + ". " + "S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     repaint();                                   //ponowne wyolanie nadpisanej metody paint()
                     counter++;  //Tymczasowy kod
@@ -41,26 +41,37 @@ public class Radar extends JPanel {
 
         //Kod jak na razie sluzy tylko do animacji, nie jest zintegrowany z innymi funkcjonalnosciami
         /*--------------------------------------------------------------------------------------------------------------*/
-        JLabel label = new JLabel();
-        label.setIcon(pointIcon);
-        label.setSize(new Dimension(20, 20));
-        label.setLocation(290, 240);
-        this.setLayout(null);
-        this.add(label);
 
-        JLabel l1 = new JLabel(), l2 = new JLabel();
-        l1.setIcon(pointIcon); l2.setIcon(pointIcon);
-        l1.setSize(new Dimension(20, 20)); l2.setSize(new Dimension(20, 20));
-        l1.setLocation(60, 60); l2.setLocation(740, 190);
-        this.add(l1); this.add(l2);
+//        Random random = new Random();
+//        int px, py;
+//
+//        for(int i=0; i<3; i++) {
+//            px = random.nextInt(400) + i*100 + 90;
+//            py = random.nextInt(400) + i*100 + 90;
+//
+//            JLabel label = new JLabel();
+//            label.setIcon(pointIcon);
+//            label.setSize(new Dimension(20, 20));
+//            label.setLocation(px, py);
+//            label.setName("0." + i);
+//
+//            this.add(label);
+//        }
 
         mouseAdapter = new MouseAdapter() {
-            int startX, startY;
+            int startX, startY, PlaneIndex, WaypointIndex;
 
             public void mousePressed(MouseEvent e) {
                 startX = e.getX();
                 startY = e.getY();
-                System.out.println(startX + " " + startY);
+
+                PlaneIndex = Character.getNumericValue(
+                        e.getComponent().getName().charAt(0) //Pobiera pierwszy znak z nazwy punku JLabel na mapie
+                );
+
+                WaypointIndex = Character.getNumericValue(
+                        e.getComponent().getName().charAt(2) //Pobiera trzeci znak z nazwy punku JLabel na mapie
+                );
             }
 
             public void mouseDragged(MouseEvent e) {
@@ -68,30 +79,36 @@ public class Radar extends JPanel {
                         e.getComponent().getX() + e.getX() - startX, //pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
                         e.getComponent().getY() + e.getY() - startY  //pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
                 );
-                x = e.getComponent().getX() + 10;
-                y = e.getComponent().getY() + 10;
+                wx = e.getComponent().getX() + 10;
+                wy = e.getComponent().getY() + 10;
+
                 repaint();
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                statki.get(PlaneIndex).
+                        zmienWspolrzednePunkuTrasy(
+                                WaypointIndex, new Punkt(wx, wy)
+                        );
+                System.out.println(wx + " " + wy);
             }
         };
 
-        label.addMouseListener(mouseAdapter);
-        label.addMouseMotionListener(mouseAdapter);
-
-//        for(Component c : this.getComponents()) {
-//            c.addMouseListener(mouseAdapter);
-//            c.addMouseMotionListener(mouseAdapter);
-//        }
+        for(Component c : this.getComponents()) {
+            c.addMouseListener(mouseAdapter);
+            c.addMouseMotionListener(mouseAdapter);
+        }
         /*--------------------------------------------------------------------------------------------------------------*/
 
         ustawPrametryPanelu();
         JFrame okno = ustawParametryOkna();
 
-        statkiPowietrzne  = new LinkedList<Statek>();
-
+        statki = new LinkedList<Statek>();
    }
 
     private void ustawPrametryPanelu() {
         this.setPreferredSize(new Dimension(850, 850));
+        this.setLayout(null);
         mapa = new ImageIcon("img/tlo.jpg").getImage();
     }
 
@@ -100,11 +117,35 @@ public class Radar extends JPanel {
         okno.add(this);
         okno.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         okno.pack();                                            //dopasowanie rozmiaru okna do romiaru elementow jakie zawiera
-        okno.setLocationRelativeTo(null);                         //po starcie programu ustawia okno na srodku ekranu
+        okno.setLocationRelativeTo(null);                       //po starcie programu ustawia okno na srodku ekranu
         okno.setResizable(true);
         okno.setVisible(true);
         okno.setLayout(null);
         return okno;
+    }
+
+    public void dodajStatek(Statek statek) {
+        statki.add(statek);
+        umiescPunktyTrasyStatkuNaMapie(statek);
+    }
+
+    private void umiescPunktyTrasyStatkuNaMapie(Statek statek) {
+        int iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;  //Punktow jest zawsze o 1 wiecej niz odcinkow
+        int x, y;
+
+        for(int i=0; i<iloscPunktowTrasy; i++) {
+            JLabel label = new JLabel();
+            label.setIcon(pointIcon);
+            label.setSize(
+                    new Dimension(20, 20)
+            );
+            x = (int) statek.getTrasa().getPunktTrasy(i).getY();
+            y = (int) statek.getTrasa().getPunktTrasy(i).getY();
+            label.setLocation(x, y);
+            label.setName(statki.size() - 1 + "" + i);
+
+            this.add(label);
+        }
     }
 
     /**
@@ -120,22 +161,18 @@ public class Radar extends JPanel {
         Graphics2D g2D = (Graphics2D) g;  //Rrzutowanie w doł obiektu typu graphics na obiekt typu graphics2D, poniewaz ma wiecej funkcjonalnosci
 
         g.drawImage(mapa, 0,0,null);
+        // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
 
-        g2D.setStroke(new BasicStroke(3));
-        g2D.setColor(Color.RED);
-
-        g.drawLine(70, 70, x ,y);
-        g.drawLine(x, y, 750 ,200);
-
-       // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
+        //Animacja, patrz wyzej
+        /*--------------------------------------------------------------------------------------------------------------*/
+//        g2D.setStroke(new BasicStroke(3));
+//        g2D.setColor(Color.RED);
+//        g.drawLine(70, 70, x ,y);
+//        g.drawLine(x, y, 750 ,200);
+        /*--------------------------------------------------------------------------------------------------------------*/
 
         //for(Statek s: statkiPowietrzne)
-           //s.rysuj(g);
-   }
-
-    public void dodajStatek(Statek statek) {
-        statkiPowietrzne.add(statek);
+        //s.rysuj(g);
     }
-
 
 }
