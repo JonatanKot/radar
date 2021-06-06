@@ -16,8 +16,8 @@ public class Trasa implements MouseListener {
 	int trasaSize;
 	static Random generator = new Random();
 
-	private static int MIN_LICZBA_ODCINKOW = 2;
-	private static int MAX_LICZBA_ODCINKOW = 6;
+	private static int MIN_LICZBA_ODCINKOW = 1;
+	private static int MAX_LICZBA_ODCINKOW = 2;
 
 //	public Trasa(int wysokosc, int xmax, int ymax){       //Konstruktor do generowania losowych tras (work in progress)
 //		this.wysokosc = wysokosc;

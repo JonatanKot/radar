@@ -4,11 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Radar extends JPanel {
 
     private LinkedList<Statek> statki;
+    private static int iloscStatkow = 0;
     private Image mapa;
+    private final ImageIcon symbolPunktu = new ImageIcon("img/punkt.png");
     private Timer timer;
     private ActionListener actionListener;
     private MouseAdapter mouseAdapter;
@@ -18,7 +21,6 @@ public class Radar extends JPanel {
     //Animacja, patrz nizej
     /*--------------------------------------------------------------------------------------------------------------*/
     int wx =300, wy =250;
-    ImageIcon pointIcon = new ImageIcon("img/punkt.png");
     /*--------------------------------------------------------------------------------------------------------------*/
 
     int counter = 0;  //Tymczasowy kod
@@ -130,47 +132,6 @@ public class Radar extends JPanel {
         umiescPunktyTrasyStatkuNaMapie(statek);
     }
 
-    /*--------------------------------------------------------------------------------------------------------------*/
-//    Punkt pierwszyPunktLini, drugiPunktLini;
-    /*--------------------------------------------------------------------------------------------------------------*/
-
-    private void umiescPunktyTrasyStatkuNaMapie(Statek statek) {
-        int iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;  //Punktow jest zawsze o 1 wiecej niz odcinkow
-        int x, y;
-
-        for(int i=0; i<iloscPunktowTrasy; i++) {
-            JLabel label = new JLabel();
-            label.setIcon(pointIcon);
-            label.setSize(
-                    new Dimension(20, 20)
-            );
-            x = (int) statek.getTrasa().getPunktTrasy(i).getX()-10;
-            y = (int) statek.getTrasa().getPunktTrasy(i).getY()-10;
-            label.setLocation(x, y);
-            label.setName(statki.size() - 1 + "." + i);
-
-            /*--------------------------------------------------------------------------------------------------------------*/
-//            label.setForeground(Color.GREEN);
-//            label.setFont(label.getFont().deriveFont(20f));
-//            label.setText(i + "");
-            /*--------------------------------------------------------------------------------------------------------------*/
-
-            /*--------------------------------------------------------------------------------------------------------------*/
-//            if(i == 0) {
-//                pierwszyPunktLini = new Punkt(x, y);
-//                drugiPunktLini = null;
-//            } else if (i == 1){
-//                drugiPunktLini = new Punkt(x, y);
-//            } else {
-//                pierwszyPunktLini = new Punkt(drugiPunktLini);
-//                drugiPunktLini = new Punkt(x, y);
-//            }
-            this.add(label);
-
-            /*--------------------------------------------------------------------------------------------------------------*/
-        }
-    }
-
     /**
      * Nadpisana metoda klasy Component.
      * Metoda ta przyjmuje jako argument obiekt typu Graphics (klasa Graphics jest klasa abstrakcyjna),
@@ -188,45 +149,65 @@ public class Radar extends JPanel {
 
         obiektyNp.paint(g);
 
-        //Animacja, patrz wyzej
-        /*--------------------------------------------------------------------------------------------------------------*/
-        g2D.setStroke(new BasicStroke(3));
-        g2D.setColor(Color.RED);
-        Punkt punkt1 = null, punkt2 = null;
-
-        if (statki.size() > 0){
-            for (int i = 0; i < statki.get(0).getTrasa().getOdcinki().size() + 1; i++) {
-                if (i == 0) {
-                    punkt1 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
-                } else if (i == 1) {
-                    punkt2 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
-                    g2D.drawLine((int) punkt1.getX(), (int) punkt1.getY(), (int) punkt2.getX(), (int) punkt2.getY());
-                } else {
-                    punkt1 = new Punkt(punkt2);
-                    punkt2 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
-                    g2D.drawLine((int) punkt1.getX(), (int) punkt1.getY(), (int) punkt2.getX(), (int) punkt2.getY());
-                }
-            }
-        }
-        //narysujLiniePomiedzyPunktami(g);
-        /*--------------------------------------------------------------------------------------------------------------*/
+        narysujOdcinkiPomiedzyPunktami(g2D);
 
         //for(Statek s: statkiPowietrzne)
         //s.rysuj(g);
     }
 
-//    private void narysujLiniePomiedzyPunktami(Graphics g) {
-//        Graphics2D g2D = (Graphics2D) g;
-//        int pierwszyPunktX, pierwszyPunktY, drugiPunktX, drugiPunktY;
-//        g2D.setStroke(new BasicStroke(3));
-//        g2D.setColor(Color.RED);
-//        if(drugiPunktLini != null) {
-//            pierwszyPunktX = (int) pierwszyPunktLini.getX();
-//            pierwszyPunktY = (int) pierwszyPunktLini.getY();
-//            drugiPunktX = (int) drugiPunktLini.getX();
-//            drugiPunktY = (int) drugiPunktLini.getY();
-//            g2D.drawLine(pierwszyPunktX, pierwszyPunktY, drugiPunktX, drugiPunktY);
-//        }
-//    }
+    private void umiescPunktyTrasyStatkuNaMapie(Statek statek) {
+        int iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;  //Punktow jest zawsze o 1 wiecej niz odcinkow
+        int x, y;
+
+        for(int i=0; i<iloscPunktowTrasy; i++) {
+            JLabel label = new JLabel();
+            label.setIcon(symbolPunktu);
+            label.setSize(
+                    new Dimension(20, 20)
+            );
+            x = (int) statek.getTrasa().getPunktTrasy(i).getX()-10;
+            y = (int) statek.getTrasa().getPunktTrasy(i).getY()-10;
+            label.setLocation(x, y);
+            label.setName(statki.size() - 1 + "." + i);
+
+            this.add(label);
+        }
+    }
+
+    private void narysujOdcinkiPomiedzyPunktami(Graphics2D g2D) {
+        Punkt punkt1 = null, punkt2 = null;
+        int iloscPunktowTrasy;
+
+        g2D.setColor(Color.RED);
+
+        g2D.setStroke(new BasicStroke(3));
+        for(Statek statek : statki){
+            iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;
+
+            for (int i = 0; i < iloscPunktowTrasy; i++) {
+                if (i == 0) {
+                    punkt1 = statek.getTrasa().getPunktTrasy(i);
+                } else if (i == 1) {
+                    punkt2 = statek.getTrasa().getPunktTrasy(i);
+                    g2D.drawLine(
+                            (int) punkt1.getX(),
+                            (int) punkt1.getY(),
+                            (int) punkt2.getX(),
+                            (int) punkt2.getY()
+                    );
+                } else {
+                    punkt1 = new Punkt(punkt2);
+                    punkt2 = statek.getTrasa().getPunktTrasy(i);
+                    g2D.drawLine(
+                            (int) punkt1.getX(),
+                            (int) punkt1.getY(),
+                            (int) punkt2.getX(),
+                            (int) punkt2.getY()
+                    );
+                }
+            }
+        }
+    }
+
 
 }
