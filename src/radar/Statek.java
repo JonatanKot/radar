@@ -32,9 +32,13 @@ public abstract class Statek {
 
         switch (wylosowanyStatek) {
             case 0 : statek = Samolot.wygenerujLosowySamolot();
+                break;
             case 1 : statek = Smiglowiec.wygenerujLosowySmiglowiec();
+                break;
             case 2 : statek = Balon.wygenerujLosowyBalon();
+                break;
             case 3 : statek = Szybowiec.wygenerujLosowySzybowiec();
+                break;
         }
 
         return statek;
