@@ -186,28 +186,31 @@ public class Radar extends JPanel {
 
         // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
 
+        obiektyNp.paint(g);
+
         //Animacja, patrz wyzej
         /*--------------------------------------------------------------------------------------------------------------*/
         g2D.setStroke(new BasicStroke(3));
         g2D.setColor(Color.RED);
         Punkt punkt1 = null, punkt2 = null;
-        for(int i=0; i<statki.get(0).getTrasa().getOdcinki().size()+1; i++) {
-            if(i==0) {
-                punkt1 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
-            } else if(i==1) {
-                punkt2 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
-                g2D.drawLine((int) punkt1.getX(), (int) punkt1.getY(), (int) punkt2.getX(), (int) punkt2.getY());
-            } else {
-                punkt1 = new Punkt(punkt2);
-                punkt2 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
-                g2D.drawLine((int) punkt1.getX(), (int) punkt1.getY(), (int) punkt2.getX(), (int) punkt2.getY());
-            }
 
+        if (statki.size() > 0){
+            for (int i = 0; i < statki.get(0).getTrasa().getOdcinki().size() + 1; i++) {
+                if (i == 0) {
+                    punkt1 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
+                } else if (i == 1) {
+                    punkt2 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
+                    g2D.drawLine((int) punkt1.getX(), (int) punkt1.getY(), (int) punkt2.getX(), (int) punkt2.getY());
+                } else {
+                    punkt1 = new Punkt(punkt2);
+                    punkt2 = new Punkt(statki.get(0).getTrasa().getPunktTrasy(i));
+                    g2D.drawLine((int) punkt1.getX(), (int) punkt1.getY(), (int) punkt2.getX(), (int) punkt2.getY());
+                }
+            }
         }
         //narysujLiniePomiedzyPunktami(g);
         /*--------------------------------------------------------------------------------------------------------------*/
 
-        obiektyNp.paint(g);
         //for(Statek s: statkiPowietrzne)
         //s.rysuj(g);
     }
