@@ -23,26 +23,6 @@ public abstract class Statek {
         return(false);
     }
 
-    public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {
-        trasa.getOdcinki().get(indexPunku/2).setP2(
-                nowyPunkt
-        );
-
-        trasa.getOdcinki().get(indexPunku/2 + 1).setP1(
-                nowyPunkt
-        );
-
-        //Kod tymczasowy
-        /*----------------------------------------------------------------------------------------------------*/
-//        LinkedList<Odcinek> t1 = trasa.getOdcinki();
-//
-//        for(int i=0; i<3; i++) {
-//            System.out.println("P1 = (" + t1.get(i).getP1().getX() + ", " + t1.get(i).getP1().getY() + ")" +
-//                    " " + "P2 = (" + t1.get(i).getP2().getX() + ", " + t1.get(i).getP2().getY() + ")");
-//        }
-        /*----------------------------------------------------------------------------------------------------*/
-    }
-
     public static Statek wygenerujLosowyStatek() {
         Statek statek = null;
         Trasa trasa = null;

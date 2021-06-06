@@ -4,12 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class Radar extends JPanel {
 
     private LinkedList<Statek> statki;
-    private static int iloscStatkow = 0;
     private Image mapa;
     private final ImageIcon symbolPunktu = new ImageIcon("img/punkt.png");
     private Timer timer;
@@ -18,96 +16,71 @@ public class Radar extends JPanel {
     private JFrame okno;
     private ObiektyNieporuszajace obiektyNp; // dodanie panelu obiektow nieporuszajacych
 
-    //Animacja, patrz nizej
-    /*--------------------------------------------------------------------------------------------------------------*/
-    int wx =300, wy =250;
-    /*--------------------------------------------------------------------------------------------------------------*/
-
-    int counter = 0;  //Tymczasowy kod
-
     public Radar() {
         obiektyNp = new ObiektyNieporuszajace("dane/dane_obiekty_nieporuszajace.txt");
-        actionListener = new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku co 1s) wykonuje zawarte w nim instrukcje
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
-                    //s.przesun();
-                    //System.out.println(counter + ". " + "S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
-                    repaint();                                   //ponowne wyolanie nadpisanej metody paint()
-                    counter++;  //Tymczasowy kod
-                }
-            }
-        };
+
+        actionListener = wygenerujActionListener();
 
         timer = new Timer(1000, actionListener);            //timer wywolujacy co 1s metode actionPerformed()
         timer.start();
 
-        //Kod jak na razie sluzy tylko do animacji, nie jest zintegrowany z innymi funkcjonalnosciami
-        /*--------------------------------------------------------------------------------------------------------------*/
-
-//        Random random = new Random();
-//        int px, py;
-//
-//        for(int i=0; i<3; i++) {
-//            px = random.nextInt(400) + i*100 + 90;
-//            py = random.nextInt(400) + i*100 + 90;
-//
-//            JLabel label = new JLabel();
-//            label.setIcon(pointIcon);
-//            label.setSize(new Dimension(20, 20));
-//            label.setLocation(px, py);
-//            label.setName("0." + i);
-//
-//            this.add(label);
-//        }
-
-        mouseAdapter = new MouseAdapter() {
-            int startX, startY, PlaneIndex, WaypointIndex;
-
-            public void mousePressed(MouseEvent e) {
-                startX = e.getX();
-                startY = e.getY();
-
-                PlaneIndex = Character.getNumericValue(
-                        e.getComponent().getName().charAt(0) //Pobiera pierwszy znak z nazwy punku JLabel na mapie
-                );
-
-                WaypointIndex = Character.getNumericValue(
-                        e.getComponent().getName().charAt(2) //Pobiera trzeci znak z nazwy punku JLabel na mapie
-                );
-            }
-
-            public void mouseDragged(MouseEvent e) {
-                e.getComponent().setLocation(
-                        e.getComponent().getX() + e.getX() - startX, //pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
-                        e.getComponent().getY() + e.getY() - startY  //pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
-                );
-                wx = e.getComponent().getX() + 10;
-                wy = e.getComponent().getY() + 10;
-
-                repaint();
-            }
-
-            public void mouseReleased(MouseEvent e) {
-                statki.get(PlaneIndex).
-                        zmienWspolrzednePunkuTrasy(
-                                WaypointIndex, new Punkt(wx, wy)
-                        );
-                System.out.println(wx + " " + wy);
-            }
-        };
-
-        for(Component c : this.getComponents()) {
-            c.addMouseListener(mouseAdapter);
-            c.addMouseMotionListener(mouseAdapter);
-        }
-        /*--------------------------------------------------------------------------------------------------------------*/
+        mouseAdapter = wygenerujMouseAdapter();
 
         ustawPrametryPanelu();
         JFrame okno = ustawParametryOkna();
 
         statki = new LinkedList<Statek>();
    }
+
+    private ActionListener wygenerujActionListener(){
+        return new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku wzbudzenie timera wystepujace co 1s) wykonuje zawarte w nim instrukcje
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
+                    //s.przesun();
+                    //System.out.println(counter + ". " + "S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
+                    repaint();                         //ponowne wyolanie nadpisanej metody paint()
+                }
+            }
+        };
+    }
+
+    private MouseAdapter wygenerujMouseAdapter() {
+        return new MouseAdapter() {
+            int xPrzedPrzesunieciem, yPrzedPrzesunieciem, xPoPrzesunieciu, yPoPrzesunieciu, indexStatku, indexPunktuTrasyStatku;
+
+            public void mousePressed(MouseEvent e) {
+                xPrzedPrzesunieciem = e.getX();
+                yPrzedPrzesunieciem = e.getY();
+
+                indexStatku = Character.getNumericValue(
+                        e.getComponent().getName().charAt(0)                         //Pobiera pierwszy znak z nazwy punku JLabel na mapie
+                );
+
+                indexPunktuTrasyStatku = Character.getNumericValue(
+                        e.getComponent().getName().charAt(2)                         //Pobiera trzeci znak z nazwy punku JLabel na mapie
+                );
+            }
+
+            public void mouseDragged(MouseEvent e) {
+                e.getComponent().setLocation(
+                        e.getComponent().getX() + e.getX() - xPrzedPrzesunieciem, //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
+                        e.getComponent().getY() + e.getY() - yPrzedPrzesunieciem  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
+                );
+                xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+
+                repaint();
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                statki.get(indexStatku).
+                        getTrasa().zmienWspolrzednePunkuTrasy(
+                                indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
+                        );
+            }
+        };
+    }
 
     private void ustawPrametryPanelu() {
         this.setPreferredSize(new Dimension(850, 850));
@@ -165,10 +138,13 @@ public class Radar extends JPanel {
             label.setSize(
                     new Dimension(20, 20)
             );
-            x = (int) statek.getTrasa().getPunktTrasy(i).getX()-10;
-            y = (int) statek.getTrasa().getPunktTrasy(i).getY()-10;
+            x = (int) statek.getTrasa().getPunktTrasy(i).getX() - 10;      //Odejmuje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+            y = (int) statek.getTrasa().getPunktTrasy(i).getY() - 10;      //Odejmuje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
             label.setLocation(x, y);
             label.setName(statki.size() - 1 + "." + i);
+
+            label.addMouseListener(mouseAdapter);
+            label.addMouseMotionListener(mouseAdapter);
 
             this.add(label);
         }

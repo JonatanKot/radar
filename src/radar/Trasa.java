@@ -19,32 +19,6 @@ public class Trasa implements MouseListener {
 	private static int MIN_LICZBA_ODCINKOW = 1;
 	private static int MAX_LICZBA_ODCINKOW = 2;
 
-//	public Trasa(int wysokosc, int xmax, int ymax){       //Konstruktor do generowania losowych tras (work in progress)
-//		this.wysokosc = wysokosc;
-//		trasaSize = generator.nextInt(9)+1;
-//		Punkt pprev = new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax);
-//		for(int i =0;i<trasaSize;i++){
-//<<<<<<< HEAD
-//			odcinki.add(new Odcinek(pprev,
-//					new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-//					generator.nextInt(9)+1));
-//=======
-//			odcinki.add(new Odcinek(new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-//					odcinki.add(new Odcinek(pprev,
-//							new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-//							generator.nextInt(9)+1));
-//>>>>>>> 71b9df6 (Losowanie tras, statkow, rozne zmiany (kod prawdopodobie jeszcze do poprawy))
-//		}
-//	public Trasa(int wysokosc, int xmax, int ymax){       //Konstruktor do generowania losowych tras (work in progress)
-//		this.wysokosc = wysokosc;
-//		trasaSize = generator.nextInt(9)+1;
-//		Punkt pprev = new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax);
-//		for(int i =0;i<trasaSize;i++){
-//			odcinki.add(new Odcinek(new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-//					odcinki.add(new Odcinek(pprev,
-//							new Punkt(generator.nextInt(2*xmax)-xmax,generator.nextInt(2*ymax)-ymax),
-//							generator.nextInt(9)+1));
-//		}
 
 	public Trasa(int minPredkoscKmh, int maxPredkoscKmh, int minWysokoscM, int maxWysokoscM) {}
 
@@ -93,6 +67,16 @@ public class Trasa implements MouseListener {
 		int wysokosc = random.nextInt(maxWysokosc - minWysokosc) + minWysokosc;
 
 		return new Trasa(odcinki, wysokosc);
+	}
+
+	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {
+		odcinki.get(indexPunku/2).setP2(
+				nowyPunkt
+		);
+
+		odcinki.get(indexPunku/2 + 1).setP1(
+				nowyPunkt
+		);
 	}
 
 	/**
@@ -177,6 +161,20 @@ public class Trasa implements MouseListener {
 			return odcinek.getP2();
 		}
 	}
+
+//	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
+//		Odcinek odcinek = odcinki.get(numerPunktu / 2);
+//
+//		if(numerPunktu / 2 == 0) {
+//			if(numerPunktu % 2 == 0)
+//				odcinek.setP1(nowyPunkt);
+//			else
+//				odcinek.setP2(nowyPunkt);
+//		} else {
+//			odcinek = odcinki.get(numerPunktu - 1);
+//			odcinek.setP2(nowyPunkt);
+//		}
+//	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
