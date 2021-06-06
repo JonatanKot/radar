@@ -24,7 +24,7 @@ public class Radar extends JPanel {
     int counter = 0;  //Tymczasowy kod
 
     public Radar() {
-        obiektyNp = new ObiektyNieporuszajace();
+        obiektyNp = new ObiektyNieporuszajace("dane/dane_obiekty_nieporuszajace.txt");
         actionListener = new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {

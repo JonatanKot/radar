@@ -2,7 +2,10 @@ package radar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class ObiektyNieporuszajace extends JPanel{
 
@@ -13,20 +16,24 @@ public class ObiektyNieporuszajace extends JPanel{
     public static final int PROMIEN = 25; // staly promien
     public static final int MAX = 100; // maksymalna wysokosc obiektu nieporuszajacego
 
-    ObiektyNieporuszajace() {
+    ObiektyNieporuszajace(String filename) {
         this.setPreferredSize(new Dimension(850,850));
-        int wartoscX,wartoscY, wysokosc;
-        for(int i=0; i<ILOSC; i++) {        //generator obiektu nieporuszajacego -> kolo
-            wartoscX = (int) Math.floor(Math.random() * (825 - PROMIEN + 1) + PROMIEN);
-            wartoscY = (int) Math.floor(Math.random() * (825 - PROMIEN + 1) + PROMIEN);
-            wysokosc = (int) Math.floor(Math.random() * MAX);
-            kolaMap.put(new Punkt(wartoscX, wartoscY), wysokosc);
-        }
-        for(int i=0; i<ILOSC; i++) {        //generator obiektu nieporuszajacego -> kwadrat
-            wartoscX = (int) Math.floor(Math.random() * (825 - PROMIEN + 1) + PROMIEN);
-            wartoscY = (int) Math.floor(Math.random() * (825 - PROMIEN + 1) + PROMIEN);
-            wysokosc = (int) Math.floor(Math.random() * MAX);
-            kwadratyMap.put(new Punkt(wartoscX, wartoscY), wysokosc);
+        try {
+            Scanner sc = new Scanner(new File(filename));
+            while(sc.hasNextLine()) {
+                int wartoscX = sc.nextInt();
+                int wartoscY = sc.nextInt();
+                int wysokosc = sc.nextInt();
+                String rodzaj = sc.next();
+                if(rodzaj.equals("Circle")) {
+                    kolaMap.put(new Punkt(wartoscX, wartoscY), wysokosc);
+                }
+                else if(rodzaj.equals("Square")) {
+                    kwadratyMap.put(new Punkt(wartoscX, wartoscY), wysokosc);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
