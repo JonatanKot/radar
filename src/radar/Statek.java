@@ -17,7 +17,9 @@ public abstract class Statek {
     	wspolrzedne = new Punkt(
     	        trasa.obliczAktualneWspolrzedneStatku(wspolrzedne)
         );
-
+        if(wspolrzedne == new Punkt(Double.MAX_VALUE,Double.MAX_VALUE)){
+            return(true);
+        }
         return(false);
     }
 
