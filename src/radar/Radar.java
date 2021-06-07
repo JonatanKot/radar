@@ -38,7 +38,11 @@ public class Radar extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
                     //s.przesun();
-                    //System.out.println(counter + ". " + "S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
+                    System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
+                    s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
+                    if(s.wspolrzedne.equals(s.trasa.odcinki.get(s.trasa.indeksOdcinka))) s.trasa.indeksOdcinka++;
+                    //System.out.println(s.wspolrzedne);
+                    //System.out.println();
                     repaint();                         //ponowne wyolanie nadpisanej metody paint()
                 }
             }
@@ -136,6 +140,10 @@ public class Radar extends JPanel {
         obiektyNp.paint(g);
 
         narysujOdcinkiPomiedzyPunktami(g2D);
+
+        for(Statek s: statki) {
+            g2D.drawImage(s.symbol, (int)s.wspolrzedne.getX(), (int)s.wspolrzedne.getY(), null);
+        }
 
         //for(Statek s: statkiPowietrzne)
         //s.rysuj(g);
