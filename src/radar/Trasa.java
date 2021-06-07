@@ -166,6 +166,10 @@ public class Trasa implements MouseListener {
 		}
 	}
 
+	public int getWysokosc() {
+		return wysokosc;
+	}
+
 //	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
 //		Odcinek odcinek = odcinki.get(numerPunktu / 2);
 //
