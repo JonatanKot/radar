@@ -35,6 +35,7 @@ public class Trasa implements MouseListener {
 		this.wysokosc = trasa.wysokosc;
 	}
 
+
 	public static Trasa wygenerujLosowaTrase(int minPredkosc, int maxPredkosc, int minWysokosc, int maxWysokosc) {
 		LinkedList <Odcinek> odcinki = new LinkedList<Odcinek>();
 		Punkt p1 = null, p2 = null;
@@ -70,13 +71,16 @@ public class Trasa implements MouseListener {
 	}
 
 	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {
-		odcinki.get(indexPunku/2).setP2(
-				nowyPunkt
-		);
-
-		odcinki.get(indexPunku/2 + 1).setP1(
-				nowyPunkt
-		);
+		if(indexPunku>0 && indexPunku<2) {
+			odcinki.get(indexPunku/2).setP2(nowyPunkt);
+			odcinki.get(indexPunku/2 + 1).setP1(nowyPunkt);
+		}
+		if(indexPunku==0) {
+			odcinki.get(0).setP1(nowyPunkt);
+		}
+		if(indexPunku==(getOdcinki().size())) {
+			odcinki.get(getOdcinki().size()-1).setP2(nowyPunkt);
+		}
 	}
 
 	/**
