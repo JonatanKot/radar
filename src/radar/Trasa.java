@@ -61,6 +61,8 @@ public class Trasa implements MouseListener {
 			//double sinusalfa = ((p2.getY() - p1.getY())) / dl_odc;
 			//double kierunek = Math.asin(sinusalfa);
 
+			System.out.println(p1.getX() + " " + p1.getY() + " " + p2.getX() + " " + p2.getY());
+
 			odcinki.add(
 					new Odcinek(p1, p2, predkosc, (int) kierunek)
 			);
@@ -88,16 +90,38 @@ public class Trasa implements MouseListener {
 	 * y = dy + y0,
 	 * gdzie x0 i y0 to poprzednie wspolrzedne statku (sprzed sekundy)
 	 */
+
+
 	public Punkt obliczAktualneWspolrzedneStatku(Punkt wspolrzedne) {
-		int predkosc = odcinki.get(indeksOdcinka).getPredkosc();
-		int kierunek = odcinki.get(indeksOdcinka).getKierunek();
 		Punkt p1 = odcinki.get(indeksOdcinka).getP1();
 		Punkt p2 = odcinki.get(indeksOdcinka).getP2();
+		if((indeksOdcinka+1)!= odcinki.size()){ // SAMOLOT LECI DO OSTATNIEGO PUNKTU
+			//System.out.println(Math.abs(wspolrzedne.getX() - odcinki.get(indeksOdcinka).getP2().getX())); //obserwuje wspolrzedne jak sie zmieniaja
+			/*
+			W warunku ponizej (dalem przykladowo) "10", czyli wielkosc akceptowalnego otoczenie PUNKTU do ktorego ma doleciec
+			bo nie wiem jak zrobic " aktualne_wspolrzedne.equals(punkt_do_ktorego_ma_doleciec) " bo przy roznych predkosciach, timerze, nie bedzie to idealnie dokladne
+			otoczenie sie zmniejszy pozniej
+
+			 */
+
+			if( (Math.abs(wspolrzedne.getX() - odcinki.get(indeksOdcinka).getP2().getX())<10) ||
+					(Math.abs(wspolrzedne.getY() - odcinki.get(indeksOdcinka).getP2().getY())<10)) {
+				indeksOdcinka++;
+			}
+		}
+		/*
+		Musimy dodac ze jak doleci do ostatniego punktu to konczy bieg, remove samolot z listy, remove odcinki i wyswietlanie ich
+
+		 */
+
+		int predkosc = odcinki.get(indeksOdcinka).getPredkosc();
+		int kierunek = odcinki.get(indeksOdcinka).getKierunek();
 
 		double x = obliczDeltaX(predkosc, kierunek) + wspolrzedne.getX();
 		double y = obliczDeltaY(predkosc, kierunek) + wspolrzedne.getY();
+		//System.out.println(kierunek + " 	" + obliczDeltaX(predkosc,kierunek) + " 	" + obliczDeltaY(predkosc,kierunek));
 
-		System.out.println(kierunek + " 	" + obliczDeltaX(predkosc,kierunek) + " 	" + obliczDeltaY(predkosc,kierunek));
+		//Chyba Marka proba obliczania wspolrzednych
 		/*while((x > p1.getX() && x > p2.getX()) || (x < p1.getX() && x < p2.getX())){ //Sprawdzamy wyjscie poza obecny odcinek
 			//System.out.println(iloscOdcinkow);
 			/*if(indeksOdcinka++ == (iloscOdcinkow)){
