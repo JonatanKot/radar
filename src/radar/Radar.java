@@ -72,22 +72,25 @@ public class Radar extends JPanel {
 
             public void mouseDragged(MouseEvent e) {
                 if(indexPunktuTrasyStatku>1){
-                    e.getComponent().setLocation(
-                            e.getComponent().getX() + e.getX() - xPrzedPrzesunieciem, //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
-                            e.getComponent().getY() + e.getY() - yPrzedPrzesunieciem  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
-                    );
-                    xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
-                    yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                    int x = e.getComponent().getX() + e.getX() - xPrzedPrzesunieciem;  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
+                    int y = e.getComponent().getY() + e.getY() - yPrzedPrzesunieciem;  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
+
+                    e.getComponent().setLocation(x, y);
 
                     repaint();
                 }
             }
 
             public void mouseReleased(MouseEvent e) {
-                statki.get(indexStatku).
-                        getTrasa().zmienWspolrzednePunkuTrasy(
-                                indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
-                        );
+                if(xPrzedPrzesunieciem != xPoPrzesunieciu || yPrzedPrzesunieciem != yPoPrzesunieciu){
+                    xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                    yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+
+                    statki.get(indexStatku).
+                            getTrasa().zmienWspolrzednePunkuTrasy(
+                            indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
+                    );
+                }
             }
         };
     }
@@ -151,7 +154,8 @@ public class Radar extends JPanel {
             x = (int) statek.getTrasa().getPunktTrasy(i).getX() - 10;      //Odejmuje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
             y = (int) statek.getTrasa().getPunktTrasy(i).getY() - 10;      //Odejmuje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
             label.setLocation(x, y);
-            label.setName(statki.size() - 1 + "." + i);
+            label.setName(statki.size() - 1 + "." + i);                    /*Ustawiam nazwe graficznego punktu w celu skojarzenia go z faktycznym punktem trasy danego samolotu
+                                                                             nazwa = index_statku.numer_punktu (pierwszy punkt ma numer 0)*/
 
             label.addMouseListener(mouseAdapter);
             label.addMouseMotionListener(mouseAdapter);
@@ -161,12 +165,12 @@ public class Radar extends JPanel {
     }
 
     private void narysujOdcinkiPomiedzyPunktami(Graphics2D g2D) {
-        Punkt punkt1 = null, punkt2 = null;
+        Punkt punkt1 = null, punkt2 = null;                                    //Pierwszy i drugi punkt, z ktorych sklada sie odcinek
         int iloscPunktowTrasy;
 
         g2D.setColor(Color.RED);
 
-        g2D.setStroke(new BasicStroke(3));
+        g2D.setStroke(new BasicStroke(3));                                //Grubosc lini
         for(Statek statek : statki){
             iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;
 

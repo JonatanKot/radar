@@ -19,14 +19,7 @@ public class Trasa implements MouseListener {
 	private static int MIN_LICZBA_ODCINKOW = 1;
 	private static int MAX_LICZBA_ODCINKOW = 4;
 
-
-	public Trasa(int minPredkoscKmh, int maxPredkoscKmh, int minWysokoscM, int maxWysokoscM) {}
-
 	public Trasa(LinkedList<Odcinek> odcinki, int wysokosc) {
-		this.odcinki = odcinki;
-	}
-
-	public Trasa(LinkedList<Odcinek> odcinki) {            //Tymczasowy, probny konstruktor
 		this.odcinki = odcinki;
 	}
 
@@ -34,7 +27,6 @@ public class Trasa implements MouseListener {
 		this.odcinki = trasa.odcinki;
 		this.wysokosc = trasa.wysokosc;
 	}
-
 
 	public static Trasa wygenerujLosowaTrase(int minPredkosc, int maxPredkosc, int minWysokosc, int maxWysokosc) {
 		LinkedList <Odcinek> odcinki = new LinkedList<Odcinek>();
@@ -61,8 +53,6 @@ public class Trasa implements MouseListener {
 			odcinki.add(
 					new Odcinek(p1, p2, predkosc, kierunek)
 			);
-
-			//System.out.println("(" + p1.getX() + ", " + p1.getY() + ")" + " " + "(" + p2.getX() + ", " + p2.getY() + ")");
 		}
 
 		int wysokosc = random.nextInt(maxWysokosc - minWysokosc) + minWysokosc;
@@ -147,20 +137,6 @@ public class Trasa implements MouseListener {
 		return odcinki;
 	}
 
-//	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {
-//		odcinki.get(indexPunku/2).setP2(
-//				nowyPunkt
-//		);
-//
-////		setPunktTrasy(indexPunku + 1,nowyPunkt);
-//
-//		odcinki.get(indexPunku/2 + 1).setP1(
-//				nowyPunkt
-//		);
-//
-////		setPunktTrasy(indexPunku,nowyPunkt);
-//	}
-
 	/**
 	 * Zwraca n-ty punkt trasy, pierwszy punkt ma numer 0
 	 */
@@ -182,19 +158,19 @@ public class Trasa implements MouseListener {
 		return wysokosc;
 	}
 
-	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
-		Odcinek odcinek = odcinki.get(numerPunktu / 2);
-
-		if(numerPunktu / 2 == 0) {
-			if(numerPunktu % 2 == 0)
-				odcinek.setP1(nowyPunkt);
-			else
-				odcinek.setP2(nowyPunkt);
-		} else {
-			odcinek = odcinki.get(numerPunktu - 1);
-			odcinek.setP2(nowyPunkt);
-		}
-	}
+//	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
+//		Odcinek odcinek = odcinki.get(numerPunktu / 2);
+//
+//		if(numerPunktu / 2 == 0) {
+//			if(numerPunktu % 2 == 0)
+//				odcinek.setP1(nowyPunkt);
+//			else
+//				odcinek.setP2(nowyPunkt);
+//		} else {
+//			odcinek = odcinki.get(numerPunktu - 1);
+//			odcinek.setP2(nowyPunkt);
+//		}
+//	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
