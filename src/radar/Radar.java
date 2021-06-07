@@ -60,17 +60,27 @@ public class Radar extends JPanel {
                 indexPunktuTrasyStatku = Character.getNumericValue(
                         e.getComponent().getName().charAt(2)                         //Pobiera trzeci znak z nazwy punku JLabel na mapie
                 );
+
+                System.out.println(indexPunktuTrasyStatku);                          //Kod tymczasowy
+
+                if(indexPunktuTrasyStatku<2)
+                    System.out.println("Nie można zmienić odcinka trasy, na którym aktualnie znajduje sie statek"); /*Zakladam, ze statek zawsze startuje z pierwszego punktu
+			                                                                                                          pierwszego odcinka trasy i że nie można zmieniać odcinka trasy,
+			                                                                                                          na którym aktualnie się znajduje. Komunikat wyswietlany w konsoli
+			                                                                                                          tymczasowo, potem mozna pomyslec o wyswietlaniu na ekranie glownym.*/
             }
 
             public void mouseDragged(MouseEvent e) {
-                e.getComponent().setLocation(
-                        e.getComponent().getX() + e.getX() - xPrzedPrzesunieciem, //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
-                        e.getComponent().getY() + e.getY() - yPrzedPrzesunieciem  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
-                );
-                xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
-                yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                if(indexPunktuTrasyStatku>1){
+                    e.getComponent().setLocation(
+                            e.getComponent().getX() + e.getX() - xPrzedPrzesunieciem, //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
+                            e.getComponent().getY() + e.getY() - yPrzedPrzesunieciem  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
+                    );
+                    xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                    yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
 
-                repaint();
+                    repaint();
+                }
             }
 
             public void mouseReleased(MouseEvent e) {

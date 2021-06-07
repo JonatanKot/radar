@@ -17,7 +17,7 @@ public class Trasa implements MouseListener {
 	static Random generator = new Random();
 
 	private static int MIN_LICZBA_ODCINKOW = 1;
-	private static int MAX_LICZBA_ODCINKOW = 2;
+	private static int MAX_LICZBA_ODCINKOW = 4;
 
 
 	public Trasa(int minPredkoscKmh, int maxPredkoscKmh, int minWysokoscM, int maxWysokoscM) {}
@@ -62,7 +62,7 @@ public class Trasa implements MouseListener {
 					new Odcinek(p1, p2, predkosc, kierunek)
 			);
 
-			System.out.println("(" + p1.getX() + ", " + p1.getY() + ")" + " " + "(" + p2.getX() + ", " + p2.getY() + ")");
+			//System.out.println("(" + p1.getX() + ", " + p1.getY() + ")" + " " + "(" + p2.getX() + ", " + p2.getY() + ")");
 		}
 
 		int wysokosc = random.nextInt(maxWysokosc - minWysokosc) + minWysokosc;
@@ -70,16 +70,14 @@ public class Trasa implements MouseListener {
 		return new Trasa(odcinki, wysokosc);
 	}
 
-	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {
-		if(indexPunku>0 && indexPunku<2) {
-			odcinki.get(indexPunku/2).setP2(nowyPunkt);
-			odcinki.get(indexPunku/2 + 1).setP1(nowyPunkt);
-		}
-		if(indexPunku==0) {
-			odcinki.get(0).setP1(nowyPunkt);
-		}
-		if(indexPunku==(getOdcinki().size())) {
-			odcinki.get(getOdcinki().size()-1).setP2(nowyPunkt);
+	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {   //Patrz: Radar -> wygenerujMouseAdapter -> mousePressed
+		if (indexPunku > 1) {
+			if (indexPunku == (getOdcinki().size())) {
+				odcinki.get(getOdcinki().size() - 1).setP2(nowyPunkt);
+			} else {
+				odcinki.get(indexPunku / 2).setP2(nowyPunkt);
+				odcinki.get(indexPunku / 2 + 1).setP1(nowyPunkt);
+			}
 		}
 	}
 
@@ -149,6 +147,20 @@ public class Trasa implements MouseListener {
 		return odcinki;
 	}
 
+//	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {
+//		odcinki.get(indexPunku/2).setP2(
+//				nowyPunkt
+//		);
+//
+////		setPunktTrasy(indexPunku + 1,nowyPunkt);
+//
+//		odcinki.get(indexPunku/2 + 1).setP1(
+//				nowyPunkt
+//		);
+//
+////		setPunktTrasy(indexPunku,nowyPunkt);
+//	}
+
 	/**
 	 * Zwraca n-ty punkt trasy, pierwszy punkt ma numer 0
 	 */
@@ -170,19 +182,19 @@ public class Trasa implements MouseListener {
 		return wysokosc;
 	}
 
-//	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
-//		Odcinek odcinek = odcinki.get(numerPunktu / 2);
-//
-//		if(numerPunktu / 2 == 0) {
-//			if(numerPunktu % 2 == 0)
-//				odcinek.setP1(nowyPunkt);
-//			else
-//				odcinek.setP2(nowyPunkt);
-//		} else {
-//			odcinek = odcinki.get(numerPunktu - 1);
-//			odcinek.setP2(nowyPunkt);
-//		}
-//	}
+	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
+		Odcinek odcinek = odcinki.get(numerPunktu / 2);
+
+		if(numerPunktu / 2 == 0) {
+			if(numerPunktu % 2 == 0)
+				odcinek.setP1(nowyPunkt);
+			else
+				odcinek.setP2(nowyPunkt);
+		} else {
+			odcinek = odcinki.get(numerPunktu - 1);
+			odcinek.setP2(nowyPunkt);
+		}
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
