@@ -51,8 +51,8 @@ public class Trasa implements MouseListener {
 
 			double stosunek = ((p2.getY() - p1.getY())/(p2.getX() - p1.getX()));
 			double kierunek = Math.atan(stosunek) * (180/Math.PI);
-			//if((p2.getY()<p1.getY()) && (p2.getX()>p1.getX())) kierunek+=180;
-			//if((p2.getY()<p1.getY()) && (p2.getX()<p1.getX())) kierunek+=180;
+			if((p2.getY()>p1.getY()) && (p2.getX()<p1.getX())) kierunek-=180;
+			if((p2.getY()<p1.getY()) && (p2.getX()<p1.getX())) kierunek-=180;
 
 			//if((p2.getY()>p1.getY()) && (p2.getX()>p1.getX())) kierunek+=180;
 
