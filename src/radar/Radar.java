@@ -40,7 +40,8 @@ public class Radar extends JPanel {
                     //s.przesun();
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
-                    if(s.wspolrzedne.equals(s.trasa.odcinki.get(s.trasa.indeksOdcinka))) s.trasa.indeksOdcinka++;
+                    //if(s.wspolrzedne.equals(s.trasa.odcinki.get(s.trasa.indeksOdcinka).getP2())) s.trasa.indeksOdcinka++;
+                    //System.out.println(s.wspolrzedne.getX() + " " + s.wspolrzedne.getY() + " " + s.trasa.odcinki.get(s.trasa.indeksOdcinka).getP2().getX() +" "+ s.trasa.odcinki.get(s.trasa.indeksOdcinka).getP2().getY());
                     //System.out.println(s.wspolrzedne);
                     //System.out.println();
                     repaint();                         //ponowne wyolanie nadpisanej metody paint()
