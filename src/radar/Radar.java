@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Radar extends JPanel {
 
@@ -49,6 +50,7 @@ public class Radar extends JPanel {
 
                 for (int i = 0;i<statki.size();i++){
                     Punkt wsp = statki.get(i).getWspolrzedne();
+                    int wys = statki.get(i).getTrasa().getWysokosc();
                     for(int j=i+1;j<statki.size();j++){
                         if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 50){
                             if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 25){
@@ -61,6 +63,36 @@ public class Radar extends JPanel {
                             }
                             else{
                                 System.out.println("Niebezpieczne zblizenie");
+                            }
+                        }
+                    }
+                    for(Map.Entry<Punkt,Integer> entry : obiektyNp.getKwadratyMap().entrySet()){
+                        if(entry.getValue() <= wys){
+                            if(odleglosc(wsp,entry.getKey())< 50){
+                                if(odleglosc(wsp,entry.getKey())< 25){
+                                    System.out.println("Jebut kolizja");
+                                    Statek s1 = statki.get(i);
+                                    usunObiekty(s1);
+                                    break;
+                                }
+                                else{
+                                    System.out.println("Niebezpieczne zblizenie");
+                                }
+                            }
+                        }
+                    }
+                    for(Map.Entry<Punkt,Integer> entry : obiektyNp.getKolaMap().entrySet()){
+                        if(entry.getValue() <= wys){
+                            if(odleglosc(wsp,entry.getKey())< 50){
+                                if(odleglosc(wsp,entry.getKey())< 25){
+                                    System.out.println("Jebut kolizja");
+                                    Statek s1 = statki.get(i);
+                                    usunObiekty(s1);
+                                    break;
+                                }
+                                else{
+                                    System.out.println("Niebezpieczne zblizenie");
+                                }
                             }
                         }
                     }
