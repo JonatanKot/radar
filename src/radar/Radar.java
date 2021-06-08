@@ -37,13 +37,11 @@ public class Radar extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
-                    //s.przesun();
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
-                    //if(s.wspolrzedne.equals(s.trasa.odcinki.get(s.trasa.indeksOdcinka).getP2())) s.trasa.indeksOdcinka++;
-                    //System.out.println(s.wspolrzedne.getX() + " " + s.wspolrzedne.getY() + " " + s.trasa.odcinki.get(s.trasa.indeksOdcinka).getP2().getX() +" "+ s.trasa.odcinki.get(s.trasa.indeksOdcinka).getP2().getY());
-                    //System.out.println(s.wspolrzedne);
-                    //System.out.println();
+                    if(s.wspolrzedne==null) { //sprawdza czy statek dolecial do ostatniego punktu
+                        statki.remove(s); //usuwa statkek gdy doleci do ostatniego punktu
+                    }
                     repaint();                         //ponowne wyolanie nadpisanej metody paint()
                 }
             }
@@ -136,18 +134,13 @@ public class Radar extends JPanel {
         Graphics2D g2D = (Graphics2D) g;  //Rrzutowanie w doł obiektu typu graphics na obiekt typu graphics2D, poniewaz g2D ma wiecej funkcjonalnosci
         g.drawImage(mapa, 0,0,null);
 
-        // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
-
-        obiektyNp.paint(g);
+        obiektyNp.paint(g); //rysuje obiekty nieporuszajace z pliku
 
         narysujOdcinkiPomiedzyPunktami(g2D);
 
         for(Statek s: statki) {
-            g2D.drawImage(s.symbol, (int)s.wspolrzedne.getX(), (int)s.wspolrzedne.getY(), null);
+            g2D.drawImage(s.symbol, (int)s.wspolrzedne.getX(), (int)s.wspolrzedne.getY(), null); //rysuje statek
         }
-
-        //for(Statek s: statkiPowietrzne)
-        //s.rysuj(g);
     }
 
     private void umiescPunktyTrasyStatkuNaMapie(Statek statek) {
@@ -156,6 +149,7 @@ public class Radar extends JPanel {
 
         for(int i=0; i<iloscPunktowTrasy; i++) {
             JLabel label = new JLabel();
+
             label.setIcon(symbolPunktu);
             label.setSize(
                     new Dimension(20, 20)
@@ -164,11 +158,9 @@ public class Radar extends JPanel {
             y = (int) statek.getTrasa().getPunktTrasy(i).getY() - 10;      //Odejmuje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
             label.setLocation(x, y);
             label.setName(statki.size() - 1 + "." + i);                    /*Ustawiam nazwe graficznego punktu w celu skojarzenia go z faktycznym punktem trasy danego samolotu
-                                                                             nazwa = index_statku.numer_punktu (pierwszy punkt ma numer 0)*/
-
+                                                                         nazwa = index_statku.numer_punktu (pierwszy punkt ma numer 0)*/
             label.addMouseListener(mouseAdapter);
             label.addMouseMotionListener(mouseAdapter);
-
             this.add(label);
         }
     }
