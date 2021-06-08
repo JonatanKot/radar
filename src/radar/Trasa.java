@@ -16,8 +16,8 @@ public class Trasa implements MouseListener {
 	int trasaSize;
 	static Random generator = new Random();
 
-	private static int MIN_LICZBA_ODCINKOW = 1;
-	private static int MAX_LICZBA_ODCINKOW = 2;
+	private static int MIN_LICZBA_ODCINKOW = 4;
+	private static int MAX_LICZBA_ODCINKOW = 5;
 
 	public Trasa(LinkedList<Odcinek> odcinki, int wysokosc) {
 		this.odcinki = odcinki;
@@ -74,13 +74,11 @@ public class Trasa implements MouseListener {
 	}
 
 	public void zmienWspolrzednePunkuTrasy(int indexPunku, Punkt nowyPunkt) {   //Patrz: Radar -> wygenerujMouseAdapter -> mousePressed
-		if (indexPunku > 1) {
-			if (indexPunku == (getOdcinki().size())) {
-				odcinki.get(getOdcinki().size() - 1).setP2(nowyPunkt);
-			} else {
-				odcinki.get(indexPunku / 2).setP2(nowyPunkt);
-				odcinki.get(indexPunku / 2 + 1).setP1(nowyPunkt);
-			}
+		if (indexPunku == (getOdcinki().size())) {
+			odcinki.get(getOdcinki().size() - 1).setP2(nowyPunkt);
+		} else {
+			odcinki.get(indexPunku-1).setP2(nowyPunkt);
+			odcinki.get(indexPunku).setP1(nowyPunkt);
 		}
 	}
 
