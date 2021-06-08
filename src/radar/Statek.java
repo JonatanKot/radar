@@ -29,6 +29,7 @@ public abstract class Statek {
         Random random = new Random();
 
         int wylosowanyStatek = random.nextInt(3);
+        wylosowanyStatek=0;
 
         switch (wylosowanyStatek) {
             case 0 : statek = Samolot.wygenerujLosowySamolot();

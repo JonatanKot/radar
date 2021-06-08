@@ -38,17 +38,11 @@ public class Radar extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int i=0;
                 for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
-                    if(s.przesun()){
-                        statki.remove(i);
-                        i++;
-                        continue;
-                    }
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
-                    if(s.wspolrzedne.equals(s.trasa.odcinki.get(s.trasa.indeksOdcinka))) s.trasa.indeksOdcinka++;
-                    //System.out.println(s.wspolrzedne);
-                    //System.out.println();
-                    i++;
+                    if(s.wspolrzedne==null) { //sprawdza czy statek dolecial do ostatniego punktu
+                        statki.remove(s); //usuwa statkek gdy doleci do ostatniego punktu
+                    }
                                              //ponowne wyolanie nadpisanej metody paint()
                 }
                 repaint();
