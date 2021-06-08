@@ -18,6 +18,7 @@ public class Trasa implements MouseListener {
 
 	private static int MIN_LICZBA_ODCINKOW = 1;
 	private static int MAX_LICZBA_ODCINKOW = 2;
+	private static int OBSZAR=5; //akceptowalny obszar
 
 	public Trasa(LinkedList<Odcinek> odcinki, int wysokosc) {
 		this.odcinki = odcinki;
@@ -57,7 +58,7 @@ public class Trasa implements MouseListener {
 			double kierunek = Math.atan(stosunek) * (180/Math.PI);
 			if((p2.getY()>p1.getY()) && (p2.getX()<p1.getX())) kierunek-=180;
 			if((p2.getY()<p1.getY()) && (p2.getX()<p1.getX())) kierunek-=180;
-			//System.out.println(p1.getX() + " " + p1.getY() + " " + p2.getX() + " " + p2.getY());
+			System.out.println(p1.getX() + " " + p1.getY() + " " + p2.getX() + " " + p2.getY());
 
 			odcinki.add(
 					new Odcinek(p1, p2, predkosc, (int) kierunek)
@@ -91,21 +92,31 @@ public class Trasa implements MouseListener {
 	public Punkt obliczAktualneWspolrzedneStatku(Punkt wspolrzedne) {
 		Punkt p1 = odcinki.get(indeksOdcinka).getP1();
 		Punkt p2 = odcinki.get(indeksOdcinka).getP2();
-
-		/* W warunku ponizej (dalem przykladowo) "10", czyli wielkosc akceptowalnego otoczenie PUNKTU do ktorego ma doleciec
-		bo nie wiem jak zrobic " aktualne_wspolrzedne.equals(punkt_do_ktorego_ma_doleciec) " bo przy roznych predkosciach, timerze, nie bedzie to idealnie dokladne.
-		otoczenie sie zmniejszy pozniej */
-		if( (Math.abs(wspolrzedne.getX() - odcinki.get(indeksOdcinka).getP2().getX())<10) ||
-				(Math.abs(wspolrzedne.getY() - odcinki.get(indeksOdcinka).getP2().getY())<10)) {
-			if (indeksOdcinka == odcinki.size()-1) return null;
-			else indeksOdcinka++;
-		}
-
 		int predkosc = odcinki.get(indeksOdcinka).getPredkosc();
 		int kierunek = odcinki.get(indeksOdcinka).getKierunek();
 
 		double x = obliczDeltaX(predkosc, kierunek) + wspolrzedne.getX();
 		double y = obliczDeltaY(predkosc, kierunek) + wspolrzedne.getY();
+		/* W warunku ponizej (dalem przykladowo) "10", czyli wielkosc akceptowalnego otoczenie PUNKTU do ktorego ma doleciec
+		bo nie wiem jak zrobic " aktualne_wspolrzedne.equals(punkt_do_ktorego_ma_doleciec) " bo przy roznych predkosciach, timerze, nie bedzie to idealnie dokladne.
+		otoczenie sie zmniejszy pozniej */
+
+		//Warunek na to kiedy ma zmienic odcinek
+		if( (Math.abs(wspolrzedne.getX() - odcinki.get(indeksOdcinka).getP2().getX())<OBSZAR) ||
+				(Math.abs(wspolrzedne.getY() - odcinki.get(indeksOdcinka).getP2().getY())<OBSZAR)) {
+			if (indeksOdcinka == odcinki.size()-1) {
+				//przekazanie informacji o tym, ze samolot dolecial;
+				return null;
+			}
+			else {
+				/*Przykladowo samolot leci z A do B, jak znajdzie sie w OBSZARZE(np 5 pixeli) punktu B,
+				to ustawiam wspolrzedne na dokladnie punkt B i zwiekszam indeks odcinka(kierunek itd) */
+				indeksOdcinka++;
+				x = odcinki.get(indeksOdcinka).getP1().getX();
+				y = odcinki.get(indeksOdcinka).getP1().getY();
+			}
+		}
+
 
 		//Chyba Marka proba obliczania wspolrzednych
 		/*while((x > p1.getX() && x > p2.getX()) || (x < p1.getX() && x < p2.getX())){ //Sprawdzamy wyjscie poza obecny odcinek
