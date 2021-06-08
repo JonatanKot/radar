@@ -216,6 +216,7 @@ public class Radar extends JPanel {
         //s.rysuj(g);
         for(Statek s: statki){
             g.drawImage(s.getObraz(),(int)s.getWspolrzedne().getX()-25,(int)s.getWspolrzedne().getY()-25,null);
+            g2D.drawString(s.getTrasa().getWysokosc() +"m",(int)s.getWspolrzedne().getX()+10, (int)s.getWspolrzedne().getY()-10);
             Trasa trasa = s.getTrasa();
             for(Odcinek o: trasa.getOdcinki()){
                 g2D.setColor(Color.RED);
