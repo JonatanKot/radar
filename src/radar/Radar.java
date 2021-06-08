@@ -22,7 +22,7 @@ public class Radar extends JPanel {
 
         actionListener = wygenerujActionListener();
 
-        timer = new Timer(1000, actionListener);            //timer wywolujacy co 1s metode actionPerformed()
+        timer = new Timer(500, actionListener);            //timer wywolujacy co 1s metode actionPerformed()
         timer.start();
 
         mouseAdapter = wygenerujMouseAdapter();
@@ -68,15 +68,20 @@ public class Radar extends JPanel {
 
                 System.out.println(indexPunktuTrasyStatku);                          //Kod tymczasowy
 
-                if(indexPunktuTrasyStatku<2)
-                    System.out.println("Nie można zmienić odcinka trasy, na którym aktualnie znajduje sie statek"); /*Zakladam, ze statek zawsze startuje z pierwszego punktu
-			                                                                                                          pierwszego odcinka trasy i że nie można zmieniać odcinka trasy,
-			                                                                                                          na którym aktualnie się znajduje. Komunikat wyswietlany w konsoli
-			                                                                                                          tymczasowo, potem mozna pomyslec o wyswietlaniu na ekranie glownym.*/
+                if(indexPunktuTrasyStatku < statki.get(indexStatku).getTrasa().indeksOdcinka) {
+                    System.out.println("Nie można zmienić odcinka trasy, ktory zostal pokonany");
+                }
+                if(indexPunktuTrasyStatku == statki.get(indexStatku).getTrasa().indeksOdcinka || indexPunktuTrasyStatku == (statki.get(indexStatku).getTrasa().indeksOdcinka+1)) {
+                    System.out.println("Nie można zmienić odcinka trasy, na którym aktualnie znajduje sie statek");
+                }
+                /*Zakladam, ze statek zawsze startuje z pierwszego punktu
+			      pierwszego odcinka trasy i że nie można zmieniać odcinka trasy,
+			      na którym aktualnie się znajduje. Komunikat wyswietlany w konsoli
+			      tymczasowo, potem mozna pomyslec o wyswietlaniu na ekranie glownym.*/
             }
 
             public void mouseDragged(MouseEvent e) {
-                if(indexPunktuTrasyStatku>1){
+                if(indexPunktuTrasyStatku > (statki.get(indexStatku).getTrasa().indeksOdcinka+1)) {
                     int x = e.getComponent().getX() + e.getX() - xPrzedPrzesunieciem;  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
                     int y = e.getComponent().getY() + e.getY() - yPrzedPrzesunieciem;  //Pozycja poczatkowa punktu + aktualna pozycja kursora - pozycja kursora w momencie klikniecia
 
