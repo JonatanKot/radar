@@ -87,21 +87,23 @@ public class Radar extends JPanel {
 
                     e.getComponent().setLocation(x, y);
 
+                    if(xPrzedPrzesunieciem != xPoPrzesunieciu || yPrzedPrzesunieciem != yPoPrzesunieciu){
+                        xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                        yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+
+                        statki.get(indexStatku).
+                                getTrasa().zmienWspolrzednePunkuTrasy(
+                                indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
+                        );
+                    }
+
                     repaint();
                 }
             }
 
-            public void mouseReleased(MouseEvent e) {
-                if(xPrzedPrzesunieciem != xPoPrzesunieciu || yPrzedPrzesunieciem != yPoPrzesunieciu){
-                    xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
-                    yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
-
-                    statki.get(indexStatku).
-                            getTrasa().zmienWspolrzednePunkuTrasy(
-                            indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
-                    );
-                }
-            }
+//            public void mouseReleased(MouseEvent e) {
+//
+//            }
         };
     }
 
