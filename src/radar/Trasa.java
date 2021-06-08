@@ -21,6 +21,7 @@ public class Trasa implements MouseListener {
 
 	public Trasa(LinkedList<Odcinek> odcinki, int wysokosc) {
 		this.odcinki = odcinki;
+		this.wysokosc = wysokosc;
 	}
 
 	public Trasa(Trasa trasa) {               //Tymczasowy, probny konstruktor kopiujacy
