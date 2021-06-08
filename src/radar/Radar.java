@@ -37,17 +37,44 @@ public class Radar extends JPanel {
         return new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku wzbudzenie timera wystepujace co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {
-                int i=0;
+
                 for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
                     if(s.wspolrzedne==null) { //sprawdza czy statek dolecial do ostatniego punktu
                         usunObiekty(s); //usuwa statkek gdy doleci do ostatniego punktu
                     }
+
                 }
+
+                for (int i = 0;i<statki.size();i++){
+                    Punkt wsp = statki.get(i).getWspolrzedne();
+                    for(int j=i+1;j<statki.size();j++){
+                        if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 50){
+                            if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 25){
+                                System.out.println("Jebut kolizja");
+                                Statek s1 = statki.get(i);
+                                Statek s2 = statki.get(j);
+                                usunObiekty(s1);
+                                usunObiekty(s2);
+                                break;
+                            }
+                            else{
+                                System.out.println("Niebezpieczne zblizenie");
+                            }
+                        }
+                    }
+                }
+
                 repaint();
             }
         };
+    }
+
+    private double odleglosc(Punkt p1, Punkt p2){
+        double a = p1.getX() - p2.getX();
+        double b = p1.getY() - p2.getY();
+        return Math.sqrt(a*a + b*b);
     }
 
     private MouseAdapter wygenerujMouseAdapter() {

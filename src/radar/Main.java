@@ -16,8 +16,8 @@ public class Main {
         radar.dodajStatek(
                 Statek.wygenerujLosowyStatek()
         );
-//        radar.dodajStatek(
-//                Statek.wygenerujLosowyStatek()
-//        );
+        radar.dodajStatek(
+                Statek.wygenerujLosowyStatek()
+        );
     }
 }

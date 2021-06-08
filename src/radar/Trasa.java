@@ -156,7 +156,7 @@ public class Trasa implements MouseListener {
 	 * dx = V/3600 * cos(α) * 1s
 	 */
 	private double obliczDeltaX(int predkosc, double kierunek) {
-		return ((predkosc * Math.cos(zamienStopnieNaRadiany(kierunek)) * 1) / 15);
+		return ((predkosc * Math.cos(zamienStopnieNaRadiany(kierunek)) * 1) / 35);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class Trasa implements MouseListener {
 	 * dy = V/3600 * sin(α) * 1s
 	 */
 	private double obliczDeltaY(int predkosc, double kierunek) {
-		return ((predkosc * Math.sin(zamienStopnieNaRadiany(kierunek)) * 1) / 15);
+		return ((predkosc * Math.sin(zamienStopnieNaRadiany(kierunek)) * 1) / 35);
 	}
 
 	private double obliczY(double x,Punkt p1,Punkt p2){  //Funkcja liniowa od x
