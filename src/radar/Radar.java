@@ -51,6 +51,7 @@ public class Radar extends JPanel {
                 for (int i = 0;i<statki.size();i++){
                     Punkt wsp = statki.get(i).getWspolrzedne();
                     int wys = statki.get(i).getTrasa().getWysokosc();
+                    System.out.println(wys);
                     for(int j=i+1;j<statki.size();j++){
                         if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 50){
                             if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 25){
@@ -67,7 +68,7 @@ public class Radar extends JPanel {
                         }
                     }
                     for(Map.Entry<Punkt,Integer> entry : obiektyNp.getKwadratyMap().entrySet()){
-                        if(entry.getValue() <= wys){
+                        if(entry.getValue() >= wys){
                             if(odleglosc(wsp,entry.getKey())< 50){
                                 if(odleglosc(wsp,entry.getKey())< 25){
                                     System.out.println("Jebut kolizja");
@@ -82,7 +83,7 @@ public class Radar extends JPanel {
                         }
                     }
                     for(Map.Entry<Punkt,Integer> entry : obiektyNp.getKolaMap().entrySet()){
-                        if(entry.getValue() <= wys){
+                        if(entry.getValue() >= wys){
                             if(odleglosc(wsp,entry.getKey())< 50){
                                 if(odleglosc(wsp,entry.getKey())< 25){
                                     System.out.println("Jebut kolizja");
@@ -159,10 +160,6 @@ public class Radar extends JPanel {
                     repaint();
                 }
             }
-
-//            public void mouseReleased(MouseEvent e) {
-//
-//            }
         };
     }
 
