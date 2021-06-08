@@ -126,7 +126,7 @@ public class Trasa implements MouseListener {
 		(y > p1.getY() && y > p2.getY()) || (y < p1.getY() && y < p2.getY())){ //Sprawdzamy wyjscie poza obecny odcinek
 			//System.out.println(iloscOdcinkow);
 			if(++indeksOdcinka == (odcinki.size())){
-				return SYGNAL;
+				return null;
 			}
 			double dx = wspolrzedne.getX()-x;
 			double dy = wspolrzedne.getY()-y;
@@ -167,7 +167,7 @@ public class Trasa implements MouseListener {
 		return ((predkosc * Math.sin(zamienStopnieNaRadiany(kierunek)) * 1) / 15);
 	}
 
-	private double obliczY(double x,Punkt p1,Punkt p2){
+	private double obliczY(double x,Punkt p1,Punkt p2){  //Funkcja liniowa od x
 		return((p1.getY()-p2.getY())/(p1.getX()-p2.getX())*(x-p1.getX())+p1.getY());
 	}
 
