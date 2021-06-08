@@ -146,7 +146,7 @@ public class Radar extends JPanel {
 
                     e.getComponent().setLocation(x, y);
 
-                    if(xPrzedPrzesunieciem != xPoPrzesunieciu || yPrzedPrzesunieciem != yPoPrzesunieciu){
+                    //if(xPrzedPrzesunieciem != xPoPrzesunieciu || yPrzedPrzesunieciem != yPoPrzesunieciu){
                         xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
                         yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
 
@@ -154,7 +154,7 @@ public class Radar extends JPanel {
                                 getTrasa().zmienWspolrzednePunkuTrasy(
                                 indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
                         );
-                    }
+                    //}
 
                     repaint();
                 }
