@@ -7,8 +7,8 @@ public class Balon extends Statek {
 
 	private static final int MIN_PREDKOSC_KMH = 10,
 			MAX_PREDKOSC_KMH = 40,
-			MIN_WYSOKOSC_M = 50,
-			MAX_WYSOKOSC_M = 1000;
+			MIN_WYSOKOSC_M = 100,
+			MAX_WYSOKOSC_M = 300;
 
 	public Balon() {
 		symbol = new ImageIcon("img/balon.png").getImage();
