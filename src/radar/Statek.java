@@ -1,10 +1,13 @@
 package radar;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Statek {
 
+    ArrayList<JLabel> lista_label = new ArrayList<JLabel>();
     protected Trasa trasa;
     protected Punkt wspolrzedne;
     protected Image symbol;
@@ -44,6 +47,7 @@ public abstract class Statek {
 
         return statek;
     }
+
 
     public Trasa getTrasa() {
         return trasa;

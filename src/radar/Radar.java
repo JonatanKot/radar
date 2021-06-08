@@ -3,6 +3,7 @@ package radar;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Radar extends JPanel {
@@ -41,9 +42,8 @@ public class Radar extends JPanel {
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
                     if(s.wspolrzedne==null) { //sprawdza czy statek dolecial do ostatniego punktu
-                        statki.remove(s); //usuwa statkek gdy doleci do ostatniego punktu
+                        usunObiekty(s); //usuwa statkek gdy doleci do ostatniego punktu
                     }
-                                             //ponowne wyolanie nadpisanej metody paint()
                 }
                 repaint();
             }
@@ -140,7 +140,7 @@ public class Radar extends JPanel {
 
         obiektyNp.paint(g);
 
-        narysujOdcinkiPomiedzyPunktami(g2D);
+        //narysujOdcinkiPomiedzyPunktami(g2D);
 
         /*for(Statek s: statki) {
             g2D.drawImage(s.symbol, (int)s.wspolrzedne.getX(), (int)s.wspolrzedne.getY(), null);
@@ -152,10 +152,13 @@ public class Radar extends JPanel {
             g.drawImage(s.getObraz(),(int)s.getWspolrzedne().getX()-25,(int)s.getWspolrzedne().getY()-25,null);
             Trasa trasa = s.getTrasa();
             for(Odcinek o: trasa.getOdcinki()){
+                g2D.setColor(Color.RED);
+                g2D.setStroke(new BasicStroke(2));
                 g.drawLine((int)o.getP1().getX(), (int)o.getP1().getY(), (int)o.getP2().getX(), (int)o.getP2().getY());
             }
         }
     }
+
 
     private void umiescPunktyTrasyStatkuNaMapie(Statek statek) {
         int iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;  //Punktow jest zawsze o 1 wiecej niz odcinkow
@@ -172,12 +175,19 @@ public class Radar extends JPanel {
             label.setLocation(x, y);
             label.setName(statki.size() - 1 + "." + i);                    /*Ustawiam nazwe graficznego punktu w celu skojarzenia go z faktycznym punktem trasy danego samolotu
                                                                              nazwa = index_statku.numer_punktu (pierwszy punkt ma numer 0)*/
-
             label.addMouseListener(mouseAdapter);
             label.addMouseMotionListener(mouseAdapter);
 
             this.add(label);
+            statek.lista_label.add(label);
         }
+    }
+
+    private void usunObiekty(Statek statek) {
+        for (JLabel p : statek.lista_label){
+            this.remove(p);
+        }
+        statki.remove(statek);
     }
 
     private void narysujOdcinkiPomiedzyPunktami(Graphics2D g2D) {
