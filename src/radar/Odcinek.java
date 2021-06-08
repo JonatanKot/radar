@@ -1,15 +1,13 @@
 package radar;
 
-import java.util.Random;
-
 public class Odcinek {
 	private Punkt p1,p2;
 	private int predkosc;
-	private int kierunek;
+	private double kierunek;
 	
 	public Odcinek() {}
 
-	public Odcinek(Punkt p1, Punkt p2, int predkosc, int kierunek) {
+	public Odcinek(Punkt p1, Punkt p2, int predkosc, double kierunek) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.predkosc = predkosc;
@@ -36,7 +34,7 @@ public class Odcinek {
 		return predkosc;
 	}
 
-	public int getKierunek() {
+	public double getKierunek() {
 		return kierunek;
 	}
 }

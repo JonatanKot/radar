@@ -36,15 +36,22 @@ public class Radar extends JPanel {
         return new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku wzbudzenie timera wystepujace co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {
+                int i=0;
                 for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
-                    //s.przesun();
+                    if(s.przesun()){
+                        statki.remove(i);
+                        i++;
+                        continue;
+                    }
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
                     if(s.wspolrzedne.equals(s.trasa.odcinki.get(s.trasa.indeksOdcinka))) s.trasa.indeksOdcinka++;
                     //System.out.println(s.wspolrzedne);
                     //System.out.println();
-                    repaint();                         //ponowne wyolanie nadpisanej metody paint()
+                    i++;
+                                             //ponowne wyolanie nadpisanej metody paint()
                 }
+                repaint();
             }
         };
     }
@@ -141,12 +148,19 @@ public class Radar extends JPanel {
 
         narysujOdcinkiPomiedzyPunktami(g2D);
 
-        for(Statek s: statki) {
+        /*for(Statek s: statki) {
             g2D.drawImage(s.symbol, (int)s.wspolrzedne.getX(), (int)s.wspolrzedne.getY(), null);
-        }
+        }*/
 
         //for(Statek s: statkiPowietrzne)
         //s.rysuj(g);
+        for(Statek s: statki){
+            g.drawImage(s.getObraz(),(int)s.getWspolrzedne().getX()-25,(int)s.getWspolrzedne().getY()-25,null);
+            Trasa trasa = s.getTrasa();
+            for(Odcinek o: trasa.getOdcinki()){
+                g.drawLine((int)o.getP1().getX(), (int)o.getP1().getY(), (int)o.getP2().getX(), (int)o.getP2().getY());
+            }
+        }
     }
 
     private void umiescPunktyTrasyStatkuNaMapie(Statek statek) {

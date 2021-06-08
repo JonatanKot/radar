@@ -95,36 +95,37 @@ public class Trasa implements MouseListener {
 	public Punkt obliczAktualneWspolrzedneStatku(Punkt wspolrzedne) {
 		Punkt p1 = odcinki.get(indeksOdcinka).getP1();
 		Punkt p2 = odcinki.get(indeksOdcinka).getP2();
-		if((indeksOdcinka+1)!= odcinki.size()){ // SAMOLOT LECI DO OSTATNIEGO PUNKTU
+		/*if((indeksOdcinka+1)!= odcinki.size()){ // SAMOLOT LECI DO OSTATNIEGO PUNKTU
 			//System.out.println(Math.abs(wspolrzedne.getX() - odcinki.get(indeksOdcinka).getP2().getX())); //obserwuje wspolrzedne jak sie zmieniaja
 			/*
 			W warunku ponizej (dalem przykladowo) "10", czyli wielkosc akceptowalnego otoczenie PUNKTU do ktorego ma doleciec
 			bo nie wiem jak zrobic " aktualne_wspolrzedne.equals(punkt_do_ktorego_ma_doleciec) " bo przy roznych predkosciach, timerze, nie bedzie to idealnie dokladne
 			otoczenie sie zmniejszy pozniej
 
-			 */
+
 
 			if( (Math.abs(wspolrzedne.getX() - odcinki.get(indeksOdcinka).getP2().getX())<10) ||
 					(Math.abs(wspolrzedne.getY() - odcinki.get(indeksOdcinka).getP2().getY())<10)) {
 				indeksOdcinka++;
 			}
-		}
+		}*/
 		/*
 		Musimy dodac ze jak doleci do ostatniego punktu to konczy bieg, remove samolot z listy, remove odcinki i wyswietlanie ich
 
 		 */
 
 		int predkosc = odcinki.get(indeksOdcinka).getPredkosc();
-		int kierunek = odcinki.get(indeksOdcinka).getKierunek();
+		double kierunek = odcinki.get(indeksOdcinka).getKierunek();
 
 		double x = obliczDeltaX(predkosc, kierunek) + wspolrzedne.getX();
-		double y = obliczDeltaY(predkosc, kierunek) + wspolrzedne.getY();
+		double y = obliczY(x,p1,p2);
 		//System.out.println(kierunek + " 	" + obliczDeltaX(predkosc,kierunek) + " 	" + obliczDeltaY(predkosc,kierunek));
 
 		//Chyba Marka proba obliczania wspolrzednych
-		/*while((x > p1.getX() && x > p2.getX()) || (x < p1.getX() && x < p2.getX())){ //Sprawdzamy wyjscie poza obecny odcinek
+		while((x > p1.getX() && x > p2.getX()) || (x < p1.getX() && x < p2.getX()) ||
+		(y > p1.getY() && y > p2.getY()) || (y < p1.getY() && y < p2.getY())){ //Sprawdzamy wyjscie poza obecny odcinek
 			//System.out.println(iloscOdcinkow);
-			/*if(indeksOdcinka++ == (iloscOdcinkow)){
+			if(++indeksOdcinka == (odcinki.size())){
 				return SYGNAL;
 			}
 			double dx = wspolrzedne.getX()-x;
@@ -136,11 +137,13 @@ public class Trasa implements MouseListener {
 			predkosc = odcinki.get(indeksOdcinka).getPredkosc();
 			double dlen = Math.sqrt(dx * dx + dy * dy);
 			x = p2.getX() + dlen / len * obliczDeltaX(predkosc, kierunek);
-			y = p2.getY() + dlen / len * obliczDeltaY(predkosc, kierunek);
 
 			p1 = odcinki.get(indeksOdcinka).getP1();
 			p2 = odcinki.get(indeksOdcinka).getP2();
-		}*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			y = obliczY(x,p1,p2);
+
+		}//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		return new Punkt(x, y);
 	}
@@ -152,19 +155,23 @@ public class Trasa implements MouseListener {
 	 * Zwraca zmiane x-owej skladowej przemieszczenia w ciagu 1s
 	 * dx = V/3600 * cos(α) * 1s
 	 */
-	private double obliczDeltaX(int predkosc, int kierunek) {
-		return ((predkosc * Math.cos(zamienStopnieNaRadiany(kierunek)) * 1) / 360);
+	private double obliczDeltaX(int predkosc, double kierunek) {
+		return ((predkosc * Math.cos(zamienStopnieNaRadiany(kierunek)) * 1) / 15);
 	}
 
 	/**
 	 * Zwraca zmiane y-owej skladowej przemieszczenia w ciagu 1s
 	 * dy = V/3600 * sin(α) * 1s
 	 */
-	private double obliczDeltaY(int predkosc, int kierunek) {
-		return ((predkosc * Math.sin(zamienStopnieNaRadiany(kierunek)) * 1) / 360);
+	private double obliczDeltaY(int predkosc, double kierunek) {
+		return ((predkosc * Math.sin(zamienStopnieNaRadiany(kierunek)) * 1) / 15);
 	}
 
-	private double zamienStopnieNaRadiany(int kierunek) {
+	private double obliczY(double x,Punkt p1,Punkt p2){
+		return((p1.getY()-p2.getY())/(p1.getX()-p2.getX())*(x-p1.getX())+p1.getY());
+	}
+
+	private double zamienStopnieNaRadiany(double kierunek) {
 		return kierunek * (Math.PI / 180);
 	}
 
