@@ -6,7 +6,7 @@ public class Samolot extends Statek {
 
     private static final int MIN_PREDKOSC_KMH = 700,
             MAX_PREDKOSC_KMH = 1000,
-            MIN_WYSOKOSC_M = 1000,
+            MIN_WYSOKOSC_M = 500,
             MAX_WYSOKOSC_M = 10000;
 
     public Samolot() {

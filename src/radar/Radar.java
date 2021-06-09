@@ -1,17 +1,17 @@
 package radar;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class Radar extends JPanel {
 
     private LinkedList<Statek> statki;
     private Image mapa;
     private final ImageIcon symbolPunktu = new ImageIcon("img/punkt.png");
+    private Image dangerSymbol;
     private Timer timer;
     private ActionListener actionListener;
     private MouseAdapter mouseAdapter;
@@ -38,8 +38,10 @@ public class Radar extends JPanel {
         return new ActionListener() {                  //W odpowiedzi na okreslona akcje (w tym przypadku wzbudzenie timera wystepujace co 1s) wykonuje zawarte w nim instrukcje
             @Override
             public void actionPerformed(ActionEvent e) {
+                Iterator<Statek> iterator = statki.iterator();
 
-                for (Statek s : statki) {              //petla for each dla listy statkow powietrznych
+                while (iterator.hasNext()) {              //petla for each dla listy statkow powietrznych
+                    Statek s = iterator.next();
                     System.out.println("S = (" + (int) s.getWspolrzedne().getX() + ", " + (int) s.getWspolrzedne().getY() + ")"); //Tymczasowy kod
                     s.wspolrzedne = s.getTrasa().obliczAktualneWspolrzedneStatku(s.wspolrzedne);
                     if(s.wspolrzedne==null) { //sprawdza czy statek dolecial do ostatniego punktu
@@ -48,56 +50,6 @@ public class Radar extends JPanel {
 
                 }
 
-                for (int i = 0;i<statki.size();i++){
-                    Punkt wsp = statki.get(i).getWspolrzedne();
-                    int wys = statki.get(i).getTrasa().getWysokosc();
-                    System.out.println(wys);
-                    for(int j=i+1;j<statki.size();j++){
-                        if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 50){
-                            if(odleglosc(wsp,statki.get(j).getWspolrzedne())< 25){
-                                System.out.println("Jebut kolizja");
-                                Statek s1 = statki.get(i);
-                                Statek s2 = statki.get(j);
-                                usunObiekty(s1);
-                                usunObiekty(s2);
-                                break;
-                            }
-                            else{
-                                System.out.println("Niebezpieczne zblizenie");
-                            }
-                        }
-                    }
-                    for(Map.Entry<Punkt,Integer> entry : obiektyNp.getKwadratyMap().entrySet()){
-                        if(entry.getValue() >= wys){
-                            if(odleglosc(wsp,entry.getKey())< 50){
-                                if(odleglosc(wsp,entry.getKey())< 25){
-                                    System.out.println("Jebut kolizja");
-                                    Statek s1 = statki.get(i);
-                                    usunObiekty(s1);
-                                    break;
-                                }
-                                else{
-                                    System.out.println("Niebezpieczne zblizenie");
-                                }
-                            }
-                        }
-                    }
-                    for(Map.Entry<Punkt,Integer> entry : obiektyNp.getKolaMap().entrySet()){
-                        if(entry.getValue() >= wys){
-                            if(odleglosc(wsp,entry.getKey())< 50){
-                                if(odleglosc(wsp,entry.getKey())< 25){
-                                    System.out.println("Jebut kolizja");
-                                    Statek s1 = statki.get(i);
-                                    usunObiekty(s1);
-                                    break;
-                                }
-                                else{
-                                    System.out.println("Niebezpieczne zblizenie");
-                                }
-                            }
-                        }
-                    }
-                }
 
                 repaint();
             }
@@ -167,6 +119,7 @@ public class Radar extends JPanel {
         this.setPreferredSize(new Dimension(850, 850));
         this.setLayout(null);
         mapa = new ImageIcon("img/tlo.jpg").getImage();
+        dangerSymbol = new ImageIcon("img/danger.png").getImage();
     }
 
     private JFrame ustawParametryOkna() {
@@ -200,7 +153,63 @@ public class Radar extends JPanel {
         g.drawImage(mapa, 0,0,null);
 
         // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Ostrzeganie o zblizeniach i kolizje
+        ListIterator<Statek> iterator1 = statki.listIterator();
+        ListIterator<Statek> iterator2;
+        while (iterator1.hasNext()) {
+            Statek s1 = iterator1.next();
+            Punkt wsp = s1.getWspolrzedne();
+            int wys = s1.getTrasa().getWysokosc();
+            System.out.println(wys);
+            iterator2 = statki.listIterator(iterator1.nextIndex());
+            while (iterator2.hasNext()) {
+                Statek s2 = iterator2.next();
+                if (Math.abs(wys - s2.getTrasa().getWysokosc()) < 100) {
+                    if (odleglosc(wsp, s2.getWspolrzedne()) < 100) {
+                        if (odleglosc(wsp, s2.getWspolrzedne()) < 25) {
+                            System.out.println("Jebut kolizja");
+                            g.drawImage(dangerSymbol,(int)s1.getWspolrzedne().getX()-25,(int)s1.getWspolrzedne().getY()-25,null);
+                            g.drawImage(dangerSymbol,(int)s2.getWspolrzedne().getX()-25,(int)s2.getWspolrzedne().getY()-25,null);
+                            usunObiekty(s1);
+                            usunObiekty(s2);
+                            break;
+                        } else {
+                            System.out.println("Niebezpieczne zblizenie");
+                            g.drawImage(dangerSymbol,(int)s1.getWspolrzedne().getX()-25,(int)s1.getWspolrzedne().getY()-25,null);
+                        }
+                    }
+                }
+            }
+            for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKwadratyMap().entrySet()) {
+                if (entry.getValue() >= wys+100) {
+                    if (odleglosc(wsp, entry.getKey()) < 100) {
+                        if (odleglosc(wsp, entry.getKey()) < 25 && entry.getValue() >= wys) {
+                            System.out.println("Jebut kolizja");
+                            usunObiekty(s1);
+                            break;
+                        } else {
+                            System.out.println("Niebezpieczne zblizenie");
+                        }
+                        g.drawImage(dangerSymbol,(int)s1.getWspolrzedne().getX()-25,(int)s1.getWspolrzedne().getY()-25,null);
+                    }
+                }
+            }
+            for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKolaMap().entrySet()) {
+                if (entry.getValue() >= wys+100) {
+                    if (odleglosc(wsp, entry.getKey()) < 100) {
+                        if (odleglosc(wsp, entry.getKey()) < 25 && entry.getValue() >= wys) {
+                            System.out.println("Jebut kolizja");
+                            usunObiekty(s1);
+                            break;
+                        } else {
+                            System.out.println("Niebezpieczne zblizenie");
+                            g.drawImage(dangerSymbol,(int)s1.getWspolrzedne().getX()-25,(int)s1.getWspolrzedne().getY()-25,null);
+                        }
+                    }
+                }
+            }
+        }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         obiektyNp.paint(g);
 
         //narysujOdcinkiPomiedzyPunktami(g2D);

@@ -6,7 +6,7 @@ public class Smiglowiec extends Statek{
 
 	private static final int MIN_PREDKOSC_KMH = 30,
 			MAX_PREDKOSC_KMH = 300,
-			MIN_WYSOKOSC_M = 100,
+			MIN_WYSOKOSC_M = 80,
 			MAX_WYSOKOSC_M = 3000;
 
 	public Smiglowiec() {

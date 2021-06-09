@@ -6,8 +6,8 @@ public class Szybowiec extends Statek{
 
 	private static final int MIN_PREDKOSC_KMH = 70,
 			MAX_PREDKOSC_KMH = 300,
-			MIN_WYSOKOSC_M = 200,
-			MAX_WYSOKOSC_M = 10000;
+			MIN_WYSOKOSC_M = 100,
+			MAX_WYSOKOSC_M = 1000;
 
 	public Szybowiec() {
 		symbol = new ImageIcon("img/szybowiec.png").getImage();
