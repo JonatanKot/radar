@@ -20,11 +20,12 @@ public class ObiektyNieporuszajace extends JPanel{
         this.setPreferredSize(new Dimension(850,850));
         try {
             Scanner sc = new Scanner(new File(filename));
-            while(sc.hasNextLine()) {
-                int wartoscX = sc.nextInt();
-                int wartoscY = sc.nextInt();
-                int wysokosc = sc.nextInt();
+            while(sc.hasNextLine()) {       // wczytywanie linia po linii z pliku
+                int wartoscX = sc.nextInt(); // pobieram pierwsza wartosc odpowiadajaca wspolrzednej X obiektu nieporuszajacego
+                int wartoscY = sc.nextInt(); // pobieram druga wartosc odpowiadajaca wspolrzednej Y obiektu nieporuszajacego
+                int wysokosc = sc.nextInt(); // pobieram trzecia wartosc odpowiadajaca wyskosci obiektu nieporuszajacego
                 String rodzaj = sc.next();
+                // w zaleznosci od rodzaju obiektu dodaje go do odpowiedniej mapy
                 if(rodzaj.equals("Circle")) {
                     kolaMap.put(new Punkt(wartoscX, wartoscY), wysokosc);
                 }
@@ -37,7 +38,7 @@ public class ObiektyNieporuszajace extends JPanel{
         }
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics g) { //rysowanie obiektow nieporuszajacych
         Graphics2D g2D = (Graphics2D) g;
         for (Punkt punkt : kolaMap.keySet()) {
             g2D.setColor(Color.orange);
