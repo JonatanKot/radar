@@ -1,7 +1,6 @@
 package radar;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Balon extends Statek {
 

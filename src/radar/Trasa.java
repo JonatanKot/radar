@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Trasa {
 
-	
-	LinkedList <Odcinek> odcinki = new LinkedList<Odcinek>();
+
+	LinkedList<Odcinek> odcinki = new LinkedList<Odcinek>();
 	private int wysokosc;
 	int indeksOdcinka = 0;
 	int trasaSize;
@@ -26,7 +26,7 @@ public class Trasa {
 	}
 
 	public static Trasa wygenerujLosowaTrase(int minPredkosc, int maxPredkosc, int minWysokosc, int maxWysokosc) {
-		LinkedList <Odcinek> odcinki = new LinkedList<Odcinek>();
+		LinkedList<Odcinek> odcinki = new LinkedList<Odcinek>();
 		Punkt p1 = null, p2 = null;
 		Random random = new Random();
 
@@ -34,10 +34,10 @@ public class Trasa {
 		int liczbaPunktow = liczbaOdcninkow + 1;
 		int predkosc;
 
-		for(int i=0; i<liczbaPunktow; i++) {
+		for (int i = 0; i < liczbaPunktow; i++) {
 			predkosc = random.nextInt(maxPredkosc - minPredkosc) + minPredkosc;
 
-			if(i==0) {
+			if (i == 0) {
 				p1 = new Punkt(Punkt.wygenerujLosowyPunkt());
 				p2 = new Punkt(Punkt.wygenerujLosowyPunkt());
 
@@ -46,10 +46,10 @@ public class Trasa {
 				p2 = new Punkt(Punkt.wygenerujLosowyPunkt());
 			}
 
-			double stosunek = ((p2.getY() - p1.getY())/(p2.getX() - p1.getX()));
-			double kierunek = Math.atan(stosunek) * (180/Math.PI);
-			if((p2.getY()>p1.getY()) && (p2.getX()<p1.getX())) kierunek-=180;
-			if((p2.getY()<p1.getY()) && (p2.getX()<p1.getX())) kierunek-=180;
+			double stosunek = ((p2.getY() - p1.getY()) / (p2.getX() - p1.getX()));
+			double kierunek = Math.atan(stosunek) * (180 / Math.PI);
+			if ((p2.getY() > p1.getY()) && (p2.getX() < p1.getX())) kierunek -= 180;
+			if ((p2.getY() < p1.getY()) && (p2.getX() < p1.getX())) kierunek -= 180;
 
 
 			System.out.println(p1.getX() + " " + p1.getY() + " " + p2.getX() + " " + p2.getY());
@@ -68,7 +68,7 @@ public class Trasa {
 		if (indexPunku == (getOdcinki().size())) {
 			odcinki.get(getOdcinki().size() - 1).setP2(nowyPunkt);
 		} else {
-			odcinki.get(indexPunku-1).setP2(nowyPunkt);
+			odcinki.get(indexPunku - 1).setP2(nowyPunkt);
 			odcinki.get(indexPunku).setP1(nowyPunkt);
 		}
 	}
@@ -90,19 +90,19 @@ public class Trasa {
 		double kierunek = odcinki.get(indeksOdcinka).getKierunek();
 
 		double x = obliczDeltaX(predkosc, kierunek) + wspolrzedne.getX();
-		double y = obliczY(x,p1,p2);
+		double y = obliczY(x, p1, p2);
 
-		while((x > p1.getX() && x > p2.getX()) || (x < p1.getX() && x < p2.getX()) ||
-		(y > p1.getY() && y > p2.getY()) || (y < p1.getY() && y < p2.getY())){ //Sprawdzamy wyjscie poza obecny odcinek
+		while ((x > p1.getX() && x > p2.getX()) || (x < p1.getX() && x < p2.getX()) ||
+				(y > p1.getY() && y > p2.getY()) || (y < p1.getY() && y < p2.getY())) { //Sprawdzamy wyjscie poza obecny odcinek
 
-			if(++indeksOdcinka == (odcinki.size())){
+			if (++indeksOdcinka == (odcinki.size())) {
 				return null;
 			}
-			double dx = wspolrzedne.getX()-x;
-			double dy = wspolrzedne.getY()-y;
+			double dx = wspolrzedne.getX() - x;
+			double dy = wspolrzedne.getY() - y;
 			double len = Math.sqrt(dx * dx + dy * dy);
-			dx = p2.getX()-x;
-			dy = p2.getY()-y;
+			dx = p2.getX() - x;
+			dy = p2.getY() - y;
 			kierunek = odcinki.get(indeksOdcinka).getKierunek();
 			predkosc = odcinki.get(indeksOdcinka).getPredkosc();
 			double dlen = Math.sqrt(dx * dx + dy * dy);
@@ -111,7 +111,7 @@ public class Trasa {
 			p1 = odcinki.get(indeksOdcinka).getP1();
 			p2 = odcinki.get(indeksOdcinka).getP2();
 
-			y = obliczY(x,p1,p2);
+			y = obliczY(x, p1, p2);
 
 		}//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -127,8 +127,8 @@ public class Trasa {
 	}
 
 
-	private double obliczY(double x,Punkt p1,Punkt p2){  //Funkcja liniowa od x rozpieta na p1 i p2
-		return((p1.getY()-p2.getY())/(p1.getX()-p2.getX())*(x-p1.getX())+p1.getY());
+	private double obliczY(double x, Punkt p1, Punkt p2) {  //Funkcja liniowa od x rozpieta na p1 i p2
+		return ((p1.getY() - p2.getY()) / (p1.getX() - p2.getX()) * (x - p1.getX()) + p1.getY());
 	}
 
 	private double zamienStopnieNaRadiany(double kierunek) {
@@ -145,8 +145,8 @@ public class Trasa {
 	public Punkt getPunktTrasy(int numerPunktu) {
 		Odcinek odcinek = odcinki.get(numerPunktu / 2);
 
-		if(numerPunktu / 2 == 0) {
-			if(numerPunktu % 2 == 0)
+		if (numerPunktu / 2 == 0) {
+			if (numerPunktu % 2 == 0)
 				return odcinek.getP1();
 			else
 				return odcinek.getP2();
@@ -159,18 +159,4 @@ public class Trasa {
 	public int getWysokosc() {
 		return wysokosc;
 	}
-
-//	public void setPunktTrasy(int numerPunktu, Punkt nowyPunkt) {
-//		Odcinek odcinek = odcinki.get(numerPunktu / 2);
-//
-//		if(numerPunktu / 2 == 0) {
-//			if(numerPunktu % 2 == 0)
-//				odcinek.setP1(nowyPunkt);
-//			else
-//				odcinek.setP2(nowyPunkt);
-//		} else {
-//			odcinek = odcinki.get(numerPunktu - 1);
-//			odcinek.setP2(nowyPunkt);
-//		}
-//	}
 }
