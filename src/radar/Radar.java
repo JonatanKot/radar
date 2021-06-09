@@ -15,7 +15,6 @@ public class Radar extends JPanel {
     private Timer timer;
     private ActionListener actionListener;
     private MouseAdapter mouseAdapter;
-    private JFrame okno;
     private ObiektyNieporuszajace obiektyNp; // dodanie panelu obiektow nieporuszajacych
 
     public Radar() {

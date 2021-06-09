@@ -15,16 +15,7 @@ public abstract class Statek {
     public Punkt getWspolrzedne() {
         return wspolrzedne;
     }
-    
-    public boolean przesun() {
-    	wspolrzedne = new Punkt(
-    	        trasa.obliczAktualneWspolrzedneStatku(wspolrzedne)
-        );
-        if(wspolrzedne == null){
-            return(true);
-        }
-        return(false);
-    }
+
 
     public static Statek wygenerujLosowyStatek() {
         Statek statek = null;

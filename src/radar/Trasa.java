@@ -9,8 +9,6 @@ public class Trasa {
 	LinkedList<Odcinek> odcinki = new LinkedList<Odcinek>();
 	private int wysokosc;
 	int indeksOdcinka = 0;
-	int trasaSize;
-	static Random generator = new Random();
 
 	private static int MIN_LICZBA_ODCINKOW = 4;
 	private static int MAX_LICZBA_ODCINKOW = 5;
