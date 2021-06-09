@@ -23,7 +23,7 @@ public class Radar extends JPanel {
 
         actionListener = wygenerujActionListener();
 
-        timer = new Timer(500, actionListener);            //timer wywolujacy co 1s metode actionPerformed()
+        timer = new Timer(500, actionListener);            //timer wywolujacy co 0.5s metode actionPerformed()
         timer.start();
 
         mouseAdapter = wygenerujMouseAdapter();
@@ -47,10 +47,7 @@ public class Radar extends JPanel {
                     if(s.wspolrzedne==null) { //sprawdza czy statek dolecial do ostatniego punktu
                         usunObiekty(s); //usuwa statkek gdy doleci do ostatniego punktu
                     }
-
                 }
-
-
                 repaint();
             }
         };
@@ -78,8 +75,6 @@ public class Radar extends JPanel {
                         e.getComponent().getName().charAt(2)                         //Pobiera trzeci znak z nazwy punku JLabel na mapie
                 );
 
-                System.out.println(indexPunktuTrasyStatku);                          //Kod tymczasowy
-
                 if(indexPunktuTrasyStatku < statki.get(indexStatku).getTrasa().indeksOdcinka) {
                     System.out.println("Nie można zmienić odcinka trasy, ktory zostal pokonany");
                 }
@@ -99,15 +94,13 @@ public class Radar extends JPanel {
 
                     e.getComponent().setLocation(x, y);
 
-                    //if(xPrzedPrzesunieciem != xPoPrzesunieciu || yPrzedPrzesunieciem != yPoPrzesunieciu){
-                        xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
-                        yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                    xPoPrzesunieciu = e.getComponent().getX() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
+                    yPoPrzesunieciu = e.getComponent().getY() + 10;                     //Dodaje 10 zeby srodek graficznego punktu pokryl sie ze wspolrzednymi faktycznego punktu
 
-                        statki.get(indexStatku).
-                                getTrasa().zmienWspolrzednePunkuTrasy(
-                                indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
-                        );
-                    //}
+                    statki.get(indexStatku).
+                            getTrasa().zmienWspolrzednePunkuTrasy(
+                            indexPunktuTrasyStatku, new Punkt(xPoPrzesunieciu, yPoPrzesunieciu)
+                    );
 
                     repaint();
                 }
@@ -152,7 +145,6 @@ public class Radar extends JPanel {
         Graphics2D g2D = (Graphics2D) g;  //Rrzutowanie w doł obiektu typu graphics na obiekt typu graphics2D, poniewaz g2D ma wiecej funkcjonalnosci
         g.drawImage(mapa, 0,0,null);
 
-        // g.drawImage(mapa, 0,0,this.getWidth(),this.getHeight(),this);  //????
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Ostrzeganie o zblizeniach i kolizje
         ListIterator<Statek> iterator1 = statki.listIterator();
         ListIterator<Statek> iterator2;
@@ -212,14 +204,6 @@ public class Radar extends JPanel {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         obiektyNp.paint(g);
 
-        //narysujOdcinkiPomiedzyPunktami(g2D);
-
-        /*for(Statek s: statki) {
-            g2D.drawImage(s.symbol, (int)s.wspolrzedne.getX(), (int)s.wspolrzedne.getY(), null);
-        }*/
-
-        //for(Statek s: statkiPowietrzne)
-        //s.rysuj(g);
         for(Statek s: statki){
             g.drawImage(s.getObraz(),(int)s.getWspolrzedne().getX()-25,(int)s.getWspolrzedne().getY()-25,null);
             g2D.drawString(s.getTrasa().getWysokosc() +"m",(int)s.getWspolrzedne().getX()+10, (int)s.getWspolrzedne().getY()-10);
@@ -262,41 +246,5 @@ public class Radar extends JPanel {
         }
         statki.remove(statek);
     }
-
-    private void narysujOdcinkiPomiedzyPunktami(Graphics2D g2D) {
-        Punkt punkt1 = null, punkt2 = null;                                    //Pierwszy i drugi punkt, z ktorych sklada sie odcinek
-        int iloscPunktowTrasy;
-
-        g2D.setColor(Color.RED);
-
-        g2D.setStroke(new BasicStroke(3));                                //Grubosc lini
-        for(Statek statek : statki){
-            iloscPunktowTrasy = statek.getTrasa().getOdcinki().size() + 1;
-
-            for (int i = 0; i < iloscPunktowTrasy; i++) {
-                if (i == 0) {
-                    punkt1 = statek.getTrasa().getPunktTrasy(i);
-                } else if (i == 1) {
-                    punkt2 = statek.getTrasa().getPunktTrasy(i);
-                    g2D.drawLine(
-                            (int) punkt1.getX(),
-                            (int) punkt1.getY(),
-                            (int) punkt2.getX(),
-                            (int) punkt2.getY()
-                    );
-                } else {
-                    punkt1 = new Punkt(punkt2);
-                    punkt2 = statek.getTrasa().getPunktTrasy(i);
-                    g2D.drawLine(
-                            (int) punkt1.getX(),
-                            (int) punkt1.getY(),
-                            (int) punkt2.getX(),
-                            (int) punkt2.getY()
-                    );
-                }
-            }
-        }
-    }
-
 
 }
