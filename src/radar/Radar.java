@@ -146,20 +146,20 @@ public class Radar extends JPanel {
         g.drawImage(mapa, 0,0,null);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Ostrzeganie o zblizeniach i kolizje
-        ListIterator<Statek> iterator1 = statki.listIterator();
+        ListIterator<Statek> iterator1 = statki.listIterator();//Wprowadzilem iterator, aby walczyc z bugiem crashujacym
         ListIterator<Statek> iterator2;
-        while (iterator1.hasNext()) {
+        while (iterator1.hasNext()) {                    //Dla kazdego statku sprawdzamy odleglosc od pozostalych oraz od obiektow nieruchomych
             Statek s1 = iterator1.next();
             Punkt wsp = s1.getWspolrzedne();
             int wys = s1.getTrasa().getWysokosc();
             System.out.println(wys);
             iterator2 = statki.listIterator(iterator1.nextIndex());
-            while (iterator2.hasNext()) {
+            while (iterator2.hasNext()) {                                     //petla dla statkow
                 Statek s2 = iterator2.next();
                 if (Math.abs(wys - s2.getTrasa().getWysokosc()) < 100) {
                     if (odleglosc(wsp, s2.getWspolrzedne()) < 100) {
                         if (odleglosc(wsp, s2.getWspolrzedne()) < 25) {
-                            System.out.println("Jebut kolizja");
+                            System.out.println("Kolizja");
                             g.drawImage(dangerSymbol,(int)s1.getWspolrzedne().getX()-25,(int)s1.getWspolrzedne().getY()-25,null);
                             g.drawImage(dangerSymbol,(int)s2.getWspolrzedne().getX()-25,(int)s2.getWspolrzedne().getY()-25,null);
                             usunObiekty(s1);
@@ -172,11 +172,11 @@ public class Radar extends JPanel {
                     }
                 }
             }
-            for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKwadratyMap().entrySet()) {
+            for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKwadratyMap().entrySet()) {    //petla ob. nier. kwadraty
                 if (entry.getValue()+100 >= wys) {
                     if (odleglosc(wsp, entry.getKey()) < 100) {
                         if (odleglosc(wsp, entry.getKey()) < 25 && entry.getValue() >= wys) {
-                            System.out.println("Jebut kolizja");
+                            System.out.println("Kolizja");
                             usunObiekty(s1);
                             break;
                         } else {
@@ -186,11 +186,11 @@ public class Radar extends JPanel {
                     }
                 }
             }
-            for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKolaMap().entrySet()) {
+            for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKolaMap().entrySet()) {        //petla dla obiektow nieruch. kola
                 if (entry.getValue()+100 >= wys) {
                     if (odleglosc(wsp, entry.getKey()) < 100) {
                         if (odleglosc(wsp, entry.getKey()) < 25 && entry.getValue() >= wys) {
-                            System.out.println("Jebut kolizja");
+                            System.out.println("Kolizja");
                             usunObiekty(s1);
                             break;
                         } else {
@@ -204,7 +204,9 @@ public class Radar extends JPanel {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         obiektyNp.paint(g);
 
-        for(Statek s: statki){
+        iterator1 = statki.listIterator();
+        while(iterator1.hasNext()){                   //rysowanie statków i odcinkow tras
+            Statek s = iterator1.next();
             g.drawImage(s.getObraz(),(int)s.getWspolrzedne().getX()-25,(int)s.getWspolrzedne().getY()-25,null);
             g2D.drawString(s.getTrasa().getWysokosc() +"m",(int)s.getWspolrzedne().getX()+10, (int)s.getWspolrzedne().getY()-10);
             Trasa trasa = s.getTrasa();

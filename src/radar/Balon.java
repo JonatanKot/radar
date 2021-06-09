@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class Balon extends Statek {
 
-	private static final int MIN_PREDKOSC_KMH = 10,
-			MAX_PREDKOSC_KMH = 40,
+	private static final int MIN_PREDKOSC_KMH = 30,
+			MAX_PREDKOSC_KMH = 100,
 			MIN_WYSOKOSC_M = 100,
 			MAX_WYSOKOSC_M = 300;
 
