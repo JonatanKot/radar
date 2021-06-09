@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Trasa implements MouseListener {
+public class Trasa {
 
 	private static final Punkt SYGNAL = new Punkt(Double.MAX_VALUE,Double.MAX_VALUE); //Stala do przekazania Statkowi, kiedy lot sie zakonczy
 	
@@ -212,29 +212,4 @@ public class Trasa implements MouseListener {
 //			odcinek.setP2(nowyPunkt);
 //		}
 //	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
 }

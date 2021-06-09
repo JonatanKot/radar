@@ -181,7 +181,7 @@ public class Radar extends JPanel {
                 }
             }
             for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKwadratyMap().entrySet()) {
-                if (entry.getValue() >= wys+100) {
+                if (entry.getValue()+100 >= wys) {
                     if (odleglosc(wsp, entry.getKey()) < 100) {
                         if (odleglosc(wsp, entry.getKey()) < 25 && entry.getValue() >= wys) {
                             System.out.println("Jebut kolizja");
@@ -195,7 +195,7 @@ public class Radar extends JPanel {
                 }
             }
             for (Map.Entry<Punkt, Integer> entry : obiektyNp.getKolaMap().entrySet()) {
-                if (entry.getValue() >= wys+100) {
+                if (entry.getValue()+100 >= wys) {
                     if (odleglosc(wsp, entry.getKey()) < 100) {
                         if (odleglosc(wsp, entry.getKey()) < 25 && entry.getValue() >= wys) {
                             System.out.println("Jebut kolizja");
